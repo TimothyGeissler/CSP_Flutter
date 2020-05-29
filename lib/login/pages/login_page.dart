@@ -186,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                       ]),
                   child: Padding(
                     padding: EdgeInsets.only(
-                        top: 10.0, bottom: 10.0, left: 40.0, right: 40.0),
+                        top: 15.0, bottom: 15.0, left: 45.0, right: 45.0),
                     child: Text(
                       "LOGIN",
                       style: TextStyle(
@@ -233,6 +233,10 @@ class _LoginPageState extends State<LoginPage> {
       //login failed
       print("login failed");
     }
+  }
+
+  void getDealerStock() async {
+
   }
 
   void getDealers() async {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:dio/dio.dart';
 
@@ -21,6 +22,8 @@ class _DashboardState extends State<Dashboard> {
   DealerModel dealer_model = new DealerModel();
   List<Dealer> dealers_list = new List();
   List<DealerStatsModel> stats_list = new List();
+
+  TextEditingController searchController = new TextEditingController();
 
   @override
   void initState() {
@@ -60,6 +63,15 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "CSP Mobile",
+          style: TextStyle(
+            fontSize: 27.0
+          ),
+        ),
+        backgroundColor: Colors.white,
+      ),
       resizeToAvoidBottomInset: false,
       body: Center(
           child: Container(
@@ -74,6 +86,19 @@ class _DashboardState extends State<Dashboard> {
                 },
                 itemCount: dealer_model.dealers.length, // Can be null
               ))),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(
+          Icons.search,
+          color: Colors.amber,
+          size: 30,
+        ),
+        label: Text("Stock"),
+        backgroundColor: Colors.white,
+        elevation: 20.0,
+        onPressed: () {
+          Navigator.pop(context);
+        }
+      ),
     );
   }
 
@@ -87,7 +112,7 @@ class _DashboardState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: 40.0, left: 20.0, bottom: 10.0),
+              padding: EdgeInsets.only(top: 20.0, left: 20.0, bottom: 10.0),
               child: Text(
                 dealer_model.dealers[position].name,
                 style: TextStyle(
@@ -112,11 +137,48 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(bottom: 25.0),
+                  padding: EdgeInsets.only(
+                      top: 10.0, bottom: 20.0, left: 30.0, right: 30.0),
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(26),
+                      ),
+                      child: Theme(
+                        child: Material(
+                          elevation: 10.0,
+                          shadowColor: Colors.grey.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(26),
+                          child: TextField(
+                            controller: searchController,
+                            cursorColor: Colors.amber,
+                            decoration: InputDecoration(
+                              hintText: "Search stock",
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Colors.grey,
+                              ),
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 20.0, horizontal: 10.0),
+                            ),
+                          ),
+                        ),
+                        data:
+                        Theme.of(context).copyWith(primaryColor: Colors.grey),
+                      )
+                  )
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 20.0),
                 child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(26)),
-                    elevation: 3.0,
+                    elevation: 10.0,
                     child: Padding(
                       padding: EdgeInsets.all(20.0),
                       child: Column(
@@ -221,7 +283,7 @@ class _DashboardState extends State<Dashboard> {
               Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(26)),
-                  elevation: 3.0,
+                  elevation: 10.0,
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Column(
