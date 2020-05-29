@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_login_signup/dashboard/components/dealer_model.dart';
 import 'package:flutter_login_signup/login/components/login_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_login_signup/vars.dart' as globals;
+import 'package:flutter_login_signup/dashboard/pages/dashboard.dart';
+import 'package:flutter_login_signup/dashboard/components/dealer_stats_model.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -14,6 +17,8 @@ class _LoginPageState extends State<LoginPage> {
 
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final login_failed_snackbar = SnackBar(
     content: Text("Incorrect login details"),
@@ -40,6 +45,8 @@ class _LoginPageState extends State<LoginPage> {
     try {
       Login login_model = new Login.fromJson(jsonResponse);
       print(login_model.error.toString() + ", " + login_model.user.email);
+      globals.token = login_model.user.api_token;
+      print('Token: ' + globals.token);
       return login_model.error;
     } catch (e) {
       return true;
@@ -50,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: Center(
           child: Container(
@@ -187,15 +195,18 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 onTap: () async {
-                  print("tapped");
-                  bool login_bool = await loginUser(emailController.text, passwordController.text);
-                  if (login_bool == false) {
-                    //can login
-                    print("login OK");
-                  } else {
-                    //login failed
-                    print("login failed");
-                  }
+                  _scaffoldKey.currentState.showSnackBar(
+                    new SnackBar(
+                      //duration: new Duration(seconds: 5),
+                      content: new Row(
+                        children: <Widget>[
+                          new CircularProgressIndicator(),
+                          new Text("  Signing In")
+                        ],
+                      ),
+                    )
+                  );
+                  handleLogin();
                 },
               ),
             )
@@ -204,4 +215,73 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  void handleLogin() async {
+    print("tapped");
+    bool login_bool = await loginUser(emailController.text, passwordController.text);
+    if (login_bool == false) {
+      //can login
+      print("login OK");
+      //pre init data
+      await getDealers();
+      await getDealerStats();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Dashboard()),
+      );
+    } else {
+      //login failed
+      print("login failed");
+    }
+  }
+
+  void getDealers() async {
+    var token = "Bearer " + globals.token;
+    var response = await http.get(
+      globals.getDealers,
+      headers: <String, String>{
+        'Authorization': token,
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+    );
+    print(response.body + " : " + response.statusCode.toString());
+    final jsonResponse = json.decode(response.body);
+    try {
+      DealerData dealers = new DealerData.fromJson(jsonResponse);
+      print(dealers.data.error.toString());
+      globals.dealer_model = dealers.data;
+
+      // Get data for each dealership
+      //getDealerData();
+    } catch (e) {
+      print("Failed getting dealers");
+    }
+  }
+
+  void getDealerStats() async {
+    var token = "Bearer " + globals.token;
+
+    for (int i = 0; i < globals.dealer_model.dealers.length; i++) {
+      var response = await http.get(
+        globals.getDealerData + globals.dealer_model.dealers[i].id.toString(),
+        headers: <String, String>{
+          'Authorization': token,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json'
+        },
+      );
+      print(response.body + " : " + response.statusCode.toString());
+      final jsonResponse = json.decode(response.body);
+      try{
+        DealerStatsData dealerStatsData = new DealerStatsData.fromJson(jsonResponse);
+        print(dealerStatsData.data.error.toString() + ", " + dealerStatsData.data.stats[0].total.toString());
+        //dealer_stats_data_list[i] = dealerStatsData;
+        globals.stats_list.add(dealerStatsData.data);
+      } catch (e) {
+        print("Failed getting dealer stats");
+      }
+    }
+  }
+
 }
