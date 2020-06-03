@@ -32,8 +32,9 @@ class DealerStatsModel{
 }
 
 class Stats{
-  final int state_id, type, count;
-  final String total;
+  int state_id, type;
+  String total;
+  int count;
 
 
   Stats({this.state_id, this.type, this.count, this.total});

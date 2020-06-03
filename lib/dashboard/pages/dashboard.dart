@@ -34,41 +34,52 @@ class _DashboardState extends State<Dashboard> {
       dealers_list = globals.dealers_list;
       stats_list = globals.stats_list;
     });
+
+    cleanData();
+
     super.initState();
+  }
+
+  cleanData() {
+    for (int i = 0; i < dealer_model.dealers.length; i++) {
+      try {
+        print("Valid: " + stats_list[i].stats[1].total.toString());
+      } catch (e) {
+        print("Missing data: " + i.toString() + " -- Repairing...");
+        stats_list[i].stats.add(new Stats(count: 0, total: "R0"));
+      }
+    }
+  }
+
+  String getDealerStat(int dealer_no, int stat_pos, String data) {
+    //data = count or total
+    try {
+      if (data == 'count') {
+        return stats_list[dealer_no].stats[stat_pos].count.toString();
+      } else {
+        return stats_list[dealer_no].stats[stat_pos].total.toString();
+      }
+    } catch (e) {
+      if (data == 'count') {
+        return "0";
+      } else {
+        return "R0";
+      }
+    }
   }
 
   @override
   void dispose() {
-
     super.dispose();
   }
 
-  /*void dioGetDealers() async {
-    var token = "Bearer " + globals.token;
-
-    Dio dio = new Dio();
-    dio.options.headers['Content-Type'] = 'application/json; charset=UTF-8';
-    dio.options.headers['Accept'] = 'application/json';
-    dio.options.headers['Authorization'] = token;
-    Response response = await dio.get("https://truth.carsalesportal.co.za/api/dealers");
-    //print(response.statusCode.toString());
-    final jsonResponse = json.decode(response.data);
-    try {
-      DealerData dealers = new DealerData.fromJson(jsonResponse);
-      print(dealers.data.error.toString());
-    } catch (e) {
-      print("Failed getting dealers");
-    }
-  }*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "CSP Mobile",
-          style: TextStyle(
-            fontSize: 27.0
-          ),
+          style: TextStyle(fontSize: 27.0),
         ),
         backgroundColor: Colors.white,
       ),
@@ -87,21 +98,19 @@ class _DashboardState extends State<Dashboard> {
                 itemCount: dealer_model.dealers.length, // Can be null
               ))),
       floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(
-          Icons.search,
-          color: Colors.amber,
-          size: 30,
-        ),
-        label: Text("Stock"),
-        backgroundColor: Colors.white,
-        elevation: 20.0,
-        onPressed: () {
-          Navigator.pop(context);
-        }
-      ),
+          icon: Icon(
+            Icons.search,
+            color: Colors.amber,
+            size: 30,
+          ),
+          label: Text("Stock"),
+          backgroundColor: Colors.white,
+          elevation: 20.0,
+          onPressed: () {
+            //Navigate to stock page
+          }),
     );
   }
-
 
   Widget _buildPage(int position) {
     return Container(
@@ -129,14 +138,16 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget dashboardItems(int position) {
-    final GlobalKey<AnimatedCircularChartState> _chartKey = new GlobalKey<AnimatedCircularChartState>();
-    final GlobalKey<AnimatedCircularChartState> _chartKey2 = new GlobalKey<AnimatedCircularChartState>();
+    final GlobalKey<AnimatedCircularChartState> _chartKey =
+        new GlobalKey<AnimatedCircularChartState>();
+    final GlobalKey<AnimatedCircularChartState> _chartKey2 =
+        new GlobalKey<AnimatedCircularChartState>();
     return Padding(
         padding: EdgeInsets.only(top: 15.0),
         child: Container(
           child: Column(
             children: <Widget>[
-              Padding(
+              /*Padding(
                   padding: EdgeInsets.only(
                       top: 10.0, bottom: 20.0, left: 30.0, right: 30.0),
                   child: Container(
@@ -172,7 +183,7 @@ class _DashboardState extends State<Dashboard> {
                         Theme.of(context).copyWith(primaryColor: Colors.grey),
                       )
                   )
-              ),
+              ),*/
               Padding(
                 padding: EdgeInsets.only(bottom: 20.0),
                 child: Card(
@@ -196,23 +207,24 @@ class _DashboardState extends State<Dashboard> {
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               Padding(
-                                padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                                padding:
+                                    EdgeInsets.only(left: 15.0, right: 15.0),
                                 child: Column(
                                   children: <Widget>[
                                     Text(
                                       "Listed",
-                                      style:
-                                      TextStyle(fontWeight: FontWeight.w600),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
                                     ),
                                     Text(
-                                      stats_list[position].stats[1].count.toString(),
+                                      getDealerStat(position, 1, 'count'),
                                       style: TextStyle(
                                           color: Colors.green[400],
                                           fontWeight: FontWeight.w600,
                                           fontSize: 24),
                                     ),
                                     Text(
-                                      stats_list[position].stats[1].total.toString(),
+                                      getDealerStat(position, 1, 'total'),
                                       style: TextStyle(
                                           color: Colors.green[400],
                                           fontWeight: FontWeight.w600,
@@ -228,11 +240,11 @@ class _DashboardState extends State<Dashboard> {
                                   new CircularStackEntry(
                                     <CircularSegmentEntry>[
                                       new CircularSegmentEntry(
-                                          stats_list[position].stats[0].count.toDouble(),
+                                        double.tryParse(getDealerStat(position, 0, 'count')),
                                           Colors.red[400],
                                           rankKey: 'Unpublished'),
                                       new CircularSegmentEntry(
-                                          stats_list[position].stats[1].count.toDouble(),
+                                        double.tryParse(getDealerStat(position, 1, 'count')),
                                           Colors.green[400],
                                           rankKey: 'Published'),
                                     ],
@@ -242,29 +254,24 @@ class _DashboardState extends State<Dashboard> {
                                 chartType: CircularChartType.Pie,
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                                padding:
+                                    EdgeInsets.only(left: 15.0, right: 15.0),
                                 child: Column(
                                   children: <Widget>[
                                     Text(
                                       "Unlisted",
-                                      style:
-                                      TextStyle(fontWeight: FontWeight.w600),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
                                     ),
                                     Text(
-                                      stats_list[position]
-                                          .stats[0]
-                                          .count
-                                          .toString(),
+                                      getDealerStat(position, 0, 'count'),
                                       style: TextStyle(
                                           color: Colors.red[400],
                                           fontWeight: FontWeight.w600,
                                           fontSize: 24),
                                     ),
                                     Text(
-                                      stats_list[position]
-                                          .stats[0]
-                                          .total
-                                          .toString(),
+                                      getDealerStat(position, 0, 'total'),
                                       style: TextStyle(
                                           color: Colors.red[400],
                                           fontWeight: FontWeight.w600,
@@ -277,8 +284,7 @@ class _DashboardState extends State<Dashboard> {
                           )
                         ],
                       ),
-                    )
-                ),
+                    )),
               ),
               Card(
                   shape: RoundedRectangleBorder(
@@ -307,20 +313,17 @@ class _DashboardState extends State<Dashboard> {
                                   Text(
                                     "Listed",
                                     style:
-                                    TextStyle(fontWeight: FontWeight.w600),
+                                        TextStyle(fontWeight: FontWeight.w600),
                                   ),
                                   Text(
-                                    stats_list[position].stats[3].count.toString(),
+                                    getDealerStat(position, 3, 'count'),
                                     style: TextStyle(
                                         color: Colors.green[400],
                                         fontWeight: FontWeight.w600,
                                         fontSize: 24),
                                   ),
                                   Text(
-                                    stats_list[position]
-                                        .stats[3]
-                                        .total
-                                        .toString(),
+                                    getDealerStat(position, 3, 'total'),
                                     style: TextStyle(
                                         color: Colors.green[400],
                                         fontWeight: FontWeight.w600,
@@ -336,11 +339,11 @@ class _DashboardState extends State<Dashboard> {
                                 new CircularStackEntry(
                                   <CircularSegmentEntry>[
                                     new CircularSegmentEntry(
-                                        stats_list[position].stats[2].count.toDouble(),
+                                      double.tryParse(getDealerStat(position, 2, 'count')),
                                         Colors.red[400],
                                         rankKey: 'Unpublished'),
                                     new CircularSegmentEntry(
-                                        stats_list[position].stats[3].count.toDouble(),
+                                      double.tryParse(getDealerStat(position, 3, 'count')),
                                         Colors.green[400],
                                         rankKey: 'Published'),
                                   ],
@@ -356,23 +359,17 @@ class _DashboardState extends State<Dashboard> {
                                   Text(
                                     "Unlisted",
                                     style:
-                                    TextStyle(fontWeight: FontWeight.w600),
+                                        TextStyle(fontWeight: FontWeight.w600),
                                   ),
                                   Text(
-                                    stats_list[position]
-                                        .stats[2]
-                                        .count
-                                        .toString(),
+                                    getDealerStat(position, 2, 'count'),
                                     style: TextStyle(
                                         color: Colors.red[400],
                                         fontWeight: FontWeight.w600,
                                         fontSize: 24),
                                   ),
                                   Text(
-                                    stats_list[position]
-                                        .stats[2]
-                                        .total
-                                        .toString(),
+                                    getDealerStat(position, 2, 'total'),
                                     style: TextStyle(
                                         color: Colors.red[400],
                                         fontWeight: FontWeight.w600,
@@ -385,8 +382,7 @@ class _DashboardState extends State<Dashboard> {
                         )
                       ],
                     ),
-                  )
-              ),
+                  )),
             ],
           ),
         ));
