@@ -1,0 +1,10 @@
+Route::post('login', 'Auth\LoginController@ApiLogin');
+Route::get('stock/{id}', 'Api\StockController@show')->middleware('auth:api');
+Route::post('stock/update/{id}', 'Api\StockController@update')->middleware('auth:api');
+Route::get('dealers', 'Api\DealerController@index')->middleware('auth:api');
+Route::get('dealerstock/{dealer_id}/{state_id?}', 'Api\StockController@index')->middleware('auth:api');
+Route::get('dealerstats/{dealer_id}', 'Api\StockController@dealerStats')->middleware('auth:api');
+Route::get('photo/remove/{photo_id}', 'Api\StockController@deletePhoto')->middleware('auth:api');
+Route::any('photo/upload/{stock_id}', 'Api\StockController@postStockPhoto')->middleware('auth:api');
+Route::get('stockphotos/{stock_id}', 'Api\StockController@photosIndex')->middleware('auth:api');
+Route::get('colours', 'Api\StockController@colours')->middleware('auth:api');

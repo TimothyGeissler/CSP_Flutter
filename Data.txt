@@ -1,0 +1,1590 @@
+https://truth.carsalesportal.co.za/api/dealers
+{
+    "data": {
+        "error": false,
+        "dealers": [
+            {
+                "id": 11,
+                "name": "Renault Fourways"
+            },
+            {
+                "id": 13,
+                "name": "Renault Edenvale"
+            },
+            {
+                "id": 193,
+                "name": "Best Deal Auto"
+            },
+            {
+                "id": 204,
+                "name": "Auto Unique"
+            }
+        ]
+    }
+}
+----------------------------------------------------------
+https://truth.carsalesportal.co.za/api/dealerstats/11
+{
+    "data": {
+        "error": false,
+        "stats": [
+            {
+                "state_id": 1,
+                "type": 1,
+                "count": 42,
+                "total": "R5,802,950"
+            },
+            {
+                "state_id": 2,
+                "type": 1,
+                "count": 33,
+                "total": "R6,073,645"
+            },
+            {
+                "state_id": 1,
+                "type": 2,
+                "count": 9,
+                "total": "R1,586,500"
+            },
+            {
+                "state_id": 2,
+                "type": 2,
+                "count": 16,
+                "total": "R3,603,540"
+            }
+        ]
+    }
+}
+----------------------------------------------------------
+https://truth.carsalesportal.co.za/api/dealerstats/204
+{
+    "data": {
+        "error": false,
+        "stats": [
+            {
+                "state_id": 2,
+                "type": 1,
+                "count": 16,
+                "total": "R4,189,920"
+            }
+        ]
+    }
+}
+----------------------------------------------------------
+https://truth.carsalesportal.co.za/api/dealerstock/204/2
+{
+    "data": {
+        "error": false,
+        "stocks": [
+            {
+                "error": false,
+                "id": 59144,
+                "stock_num": "0014",
+                "trim": "04042675 - AUDI A4 SEDAN 2.0 TFSI SPORT S-TRONIC (2016/02-2017/06)",
+                "mileage": 101000,
+                "year": 2016,
+                "price": 349995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 176,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 515011,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-032852-d871.jpg"
+                    },
+                    {
+                        "id": 515012,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-032937-59489.jpg"
+                    },
+                    {
+                        "id": 515013,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-468893-963f3.jpg"
+                    },
+                    {
+                        "id": 515014,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-647613-1d846.jpg"
+                    },
+                    {
+                        "id": 515015,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-380618-199cb.jpg"
+                    },
+                    {
+                        "id": 515016,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-360812-4efdd.jpg"
+                    },
+                    {
+                        "id": 515017,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-850317-3a052.jpg"
+                    },
+                    {
+                        "id": 515018,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-490839-9fac.jpg"
+                    },
+                    {
+                        "id": 515019,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-500305-91953.jpg"
+                    },
+                    {
+                        "id": 515020,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-971053-972ce.jpg"
+                    },
+                    {
+                        "id": 515021,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-540556-3e769.jpg"
+                    },
+                    {
+                        "id": 515022,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-679744-33e22.jpg"
+                    },
+                    {
+                        "id": 515023,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-236167-80aae.jpg"
+                    },
+                    {
+                        "id": 515024,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-635054-2df9e.jpg"
+                    },
+                    {
+                        "id": 515025,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-951491-1ba7b.jpg"
+                    },
+                    {
+                        "id": 515026,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-053052-75f6.jpg"
+                    },
+                    {
+                        "id": 515027,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-09/",
+                        "photo": "2016-audi-a4-sedan-436692-91fa3.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 67858,
+                "stock_num": "0036",
+                "trim": "48044440 - OPEL ASTRA HATCH 1.6T SPORT (2016/12-2017/11)",
+                "mileage": 115000,
+                "year": 2017,
+                "price": 239995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 108,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 587184,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-10/",
+                        "photo": "2017-opel-astra-hatch-223809-5d86b.jpg"
+                    },
+                    {
+                        "id": 587182,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-10/",
+                        "photo": "2017-opel-astra-hatch-110420-25a10.jpg"
+                    },
+                    {
+                        "id": 587183,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-10/",
+                        "photo": "2017-opel-astra-hatch-071776-5898.jpg"
+                    },
+                    {
+                        "id": 587185,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-10/",
+                        "photo": "2017-opel-astra-hatch-632806-53e33.jpg"
+                    },
+                    {
+                        "id": 587186,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-10/",
+                        "photo": "2017-opel-astra-hatch-088796-5c5e0.jpg"
+                    },
+                    {
+                        "id": 587187,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-10/",
+                        "photo": "2017-opel-astra-hatch-149459-30c50.jpg"
+                    },
+                    {
+                        "id": 587188,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-10/",
+                        "photo": "2017-opel-astra-hatch-498054-2e418.jpg"
+                    },
+                    {
+                        "id": 587189,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-10/",
+                        "photo": "2017-opel-astra-hatch-292143-86377.jpg"
+                    },
+                    {
+                        "id": 587190,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-10/",
+                        "photo": "2017-opel-astra-hatch-146892-3b256.jpg"
+                    },
+                    {
+                        "id": 587191,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-10/",
+                        "photo": "2017-opel-astra-hatch-151378-3de0.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 69320,
+                "stock_num": "0040",
+                "trim": "47015050 - NISSAN JUKE 1.2T ACENTA (2015/01-2016/07)",
+                "mileage": 54000,
+                "year": 2016,
+                "price": 199995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 1,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 610289,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-961193-83dd8.jpg"
+                    },
+                    {
+                        "id": 610292,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-813174-930fe.jpg"
+                    },
+                    {
+                        "id": 610290,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-803152-7be3e.jpg"
+                    },
+                    {
+                        "id": 610291,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-801901-1b2aa.jpg"
+                    },
+                    {
+                        "id": 610294,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-526590-63cd8.jpg"
+                    },
+                    {
+                        "id": 610293,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-500383-8e1af.jpg"
+                    },
+                    {
+                        "id": 610295,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-548910-1254a.jpg"
+                    },
+                    {
+                        "id": 610296,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-585570-2e062.jpg"
+                    },
+                    {
+                        "id": 610297,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-578191-2d82b.jpg"
+                    },
+                    {
+                        "id": 610298,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-168490-6dbe5.jpg"
+                    },
+                    {
+                        "id": 610299,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-211902-463bd.jpg"
+                    },
+                    {
+                        "id": 610300,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-381539-26633.jpg"
+                    },
+                    {
+                        "id": 610301,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2016-nissan-juke-916182-6fe86.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 69813,
+                "stock_num": "0065",
+                "trim": "58570210 - SUBARU TRIBECA 3.6R SPORTSHIFT (2008/02-2011/01)",
+                "mileage": 213000,
+                "year": 2013,
+                "price": 159995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 278,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 614380,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-025896-17a30.jpg"
+                    },
+                    {
+                        "id": 614379,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-041351-53b7.jpg"
+                    },
+                    {
+                        "id": 614381,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-083919-961d0.jpg"
+                    },
+                    {
+                        "id": 614382,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-566495-383d3.jpg"
+                    },
+                    {
+                        "id": 614383,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-246509-3f831.jpg"
+                    },
+                    {
+                        "id": 614384,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-576476-5dd89.jpg"
+                    },
+                    {
+                        "id": 614385,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-360160-6f512.jpg"
+                    },
+                    {
+                        "id": 614386,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-298061-147bb.jpg"
+                    },
+                    {
+                        "id": 614387,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-935070-d028.jpg"
+                    },
+                    {
+                        "id": 614388,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-893011-9698f.jpg"
+                    },
+                    {
+                        "id": 614389,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-754711-7b4ec.jpg"
+                    },
+                    {
+                        "id": 614390,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-871012-49cff.jpg"
+                    },
+                    {
+                        "id": 614391,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-185925-1f6cd.jpg"
+                    },
+                    {
+                        "id": 614392,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-847390-5614f.jpg"
+                    },
+                    {
+                        "id": 614393,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-11/",
+                        "photo": "2013-subaru-tribeca-455960-512a5.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 71982,
+                "stock_num": "0082",
+                "trim": "22032962 - FORD RANGER 3.2 TDCi WILDTRAK 4X4 D/CAB AT (2018/04-)",
+                "mileage": 114000,
+                "year": 2018,
+                "price": 449995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 387,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 632586,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-688454-7d5d3.jpg"
+                    },
+                    {
+                        "id": 632588,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-730116-82ccb.jpg"
+                    },
+                    {
+                        "id": 632587,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-713152-7c4f8.jpg"
+                    },
+                    {
+                        "id": 632589,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-665288-f58c.jpg"
+                    },
+                    {
+                        "id": 632590,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-702415-996d.jpg"
+                    },
+                    {
+                        "id": 632591,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-766022-65313.jpg"
+                    },
+                    {
+                        "id": 632594,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-785979-73bc2.jpg"
+                    },
+                    {
+                        "id": 632597,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-898174-59b55.jpg"
+                    },
+                    {
+                        "id": 632595,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-286306-5e4dc.jpg"
+                    },
+                    {
+                        "id": 632596,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-788757-9e927.jpg"
+                    },
+                    {
+                        "id": 632592,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-399644-61244.jpg"
+                    },
+                    {
+                        "id": 632593,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2018-ford-ranger-734865-293b7.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 71983,
+                "stock_num": "0069",
+                "trim": "22032926 - FORD RANGER 3.2 TDCi WILDTRAK 4X2 D/CAB (2015/10-2017/08)",
+                "mileage": 92000,
+                "year": 2015,
+                "price": 349995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 139,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 632618,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-437819-6987d.jpg"
+                    },
+                    {
+                        "id": 632617,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-136158-350a3.jpg"
+                    },
+                    {
+                        "id": 632619,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-000819-765bf.jpg"
+                    },
+                    {
+                        "id": 632620,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-924551-8dadd.jpg"
+                    },
+                    {
+                        "id": 632621,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-514197-6ff7b.jpg"
+                    },
+                    {
+                        "id": 632622,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-350578-11c4d.jpg"
+                    },
+                    {
+                        "id": 632623,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-411907-2886f.jpg"
+                    },
+                    {
+                        "id": 632624,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-738375-7358f.jpg"
+                    },
+                    {
+                        "id": 632625,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-653342-8b33a.jpg"
+                    },
+                    {
+                        "id": 632626,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-248755-416ba.jpg"
+                    },
+                    {
+                        "id": 632627,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-733665-14b4.jpg"
+                    },
+                    {
+                        "id": 632628,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2015-ford-ranger-379630-20cf4.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 71984,
+                "stock_num": "0093",
+                "trim": "44047348 - MERCEDES-BENZ C-CLASS SEDAN C 200 CDI BlueEFFICIENCY CLASSIC 7G-TRONIC (2012/03-2012/12)",
+                "mileage": 236000,
+                "year": 2013,
+                "price": 149995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 280,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 632629,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2013-mercedes-benz-c-class-sedan-471837-9ba31.jpg"
+                    },
+                    {
+                        "id": 632630,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2013-mercedes-benz-c-class-sedan-430136-18034.jpg"
+                    },
+                    {
+                        "id": 632631,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2013-mercedes-benz-c-class-sedan-579134-2dd52.jpg"
+                    },
+                    {
+                        "id": 632632,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2013-mercedes-benz-c-class-sedan-043698-3abee.jpg"
+                    },
+                    {
+                        "id": 632633,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2013-mercedes-benz-c-class-sedan-834378-3f0fc.jpg"
+                    },
+                    {
+                        "id": 632634,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2013-mercedes-benz-c-class-sedan-233998-6a196.jpg"
+                    },
+                    {
+                        "id": 632635,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2013-mercedes-benz-c-class-sedan-367516-89301.jpg"
+                    },
+                    {
+                        "id": 632636,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2013-mercedes-benz-c-class-sedan-494930-56cf5.jpg"
+                    },
+                    {
+                        "id": 632637,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2013-mercedes-benz-c-class-sedan-933715-1ab75.jpg"
+                    },
+                    {
+                        "id": 632638,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2019-12/",
+                        "photo": "2013-mercedes-benz-c-class-sedan-825317-906f8.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 73813,
+                "stock_num": "000112",
+                "trim": "60010250 - TOYOTA COROLLA QUEST 1.6 (2016/04-)",
+                "mileage": 115000,
+                "year": 2016,
+                "price": 189995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 2,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 649179,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2016-toyota-corolla-quest-463052-2de5f.jpg"
+                    },
+                    {
+                        "id": 649180,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2016-toyota-corolla-quest-730614-1e9e5.jpg"
+                    },
+                    {
+                        "id": 649181,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2016-toyota-corolla-quest-472872-68635.jpg"
+                    },
+                    {
+                        "id": 649182,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2016-toyota-corolla-quest-852461-2f045.jpg"
+                    },
+                    {
+                        "id": 649183,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2016-toyota-corolla-quest-024318-4f012.jpg"
+                    },
+                    {
+                        "id": 649184,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2016-toyota-corolla-quest-275022-1d280.jpg"
+                    },
+                    {
+                        "id": 649185,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2016-toyota-corolla-quest-024445-9d13f.jpg"
+                    },
+                    {
+                        "id": 649186,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2016-toyota-corolla-quest-103127-9a37.jpg"
+                    },
+                    {
+                        "id": 649187,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2016-toyota-corolla-quest-441739-24e9e.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 74203,
+                "stock_num": "020202",
+                "trim": "35020540 - LAND ROVER FREELANDER 2 2.0 Si4 DYNAMIC AT (2012/12-2014/03)",
+                "mileage": 161000,
+                "year": 2013,
+                "price": 199995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 13,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 652097,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2013-land-rover-freelander-2-657898-7938f.jpg"
+                    },
+                    {
+                        "id": 652098,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2013-land-rover-freelander-2-008215-5c1fb.jpg"
+                    },
+                    {
+                        "id": 652099,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2013-land-rover-freelander-2-230819-38798.jpg"
+                    },
+                    {
+                        "id": 652100,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2013-land-rover-freelander-2-643368-11d2d.jpg"
+                    },
+                    {
+                        "id": 652101,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2013-land-rover-freelander-2-738370-91566.jpg"
+                    },
+                    {
+                        "id": 652102,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2013-land-rover-freelander-2-522794-3ad51.jpg"
+                    },
+                    {
+                        "id": 652103,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2013-land-rover-freelander-2-054897-f2d4.jpg"
+                    },
+                    {
+                        "id": 652104,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2013-land-rover-freelander-2-856401-8007b.jpg"
+                    },
+                    {
+                        "id": 652105,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2013-land-rover-freelander-2-616728-1f0bd.jpg"
+                    },
+                    {
+                        "id": 652106,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2013-land-rover-freelander-2-205124-142b8.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 74284,
+                "stock_num": "56582",
+                "trim": "26516101 - HYUNDAI i10 1.1 GLS (2011/05-2012/09)",
+                "mileage": 88000,
+                "year": 2017,
+                "price": 129995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 2,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 652886,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2017-hyundai-i10-823060-2441a.jpg"
+                    },
+                    {
+                        "id": 652885,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2017-hyundai-i10-022859-4f2fd.jpg"
+                    },
+                    {
+                        "id": 652887,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2017-hyundai-i10-336385-45ed7.jpg"
+                    },
+                    {
+                        "id": 652888,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2017-hyundai-i10-170262-5d0c5.jpg"
+                    },
+                    {
+                        "id": 652889,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2017-hyundai-i10-876804-2a192.jpg"
+                    },
+                    {
+                        "id": 652890,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2017-hyundai-i10-862006-42cce.jpg"
+                    },
+                    {
+                        "id": 652891,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2017-hyundai-i10-480130-74caf.jpg"
+                    },
+                    {
+                        "id": 652892,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2017-hyundai-i10-192771-77e7.jpg"
+                    },
+                    {
+                        "id": 652893,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2017-hyundai-i10-349426-40aae.jpg"
+                    },
+                    {
+                        "id": 652894,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-01/",
+                        "photo": "2017-hyundai-i10-021675-91aea.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 74823,
+                "stock_num": "8568",
+                "trim": "35047400 - LAND ROVER DISCOVERY 4 3.0 D V6 S (2010/10-2012/02)",
+                "mileage": 185000,
+                "year": 2011,
+                "price": 279995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 2,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 656073,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-015669-416e9.jpg"
+                    },
+                    {
+                        "id": 656074,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-044819-95190.jpg"
+                    },
+                    {
+                        "id": 656075,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-214243-4115b.jpg"
+                    },
+                    {
+                        "id": 656076,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-003122-5f3f7.jpg"
+                    },
+                    {
+                        "id": 656077,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-971287-1d7f5.jpg"
+                    },
+                    {
+                        "id": 656078,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-348456-36081.jpg"
+                    },
+                    {
+                        "id": 656079,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-129926-62d8b.jpg"
+                    },
+                    {
+                        "id": 656080,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-566879-16e53.jpg"
+                    },
+                    {
+                        "id": 656081,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-248918-6fffb.jpg"
+                    },
+                    {
+                        "id": 656082,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-593449-309c1.jpg"
+                    },
+                    {
+                        "id": 656083,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-224989-4200f.jpg"
+                    },
+                    {
+                        "id": 656084,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-214311-2d751.jpg"
+                    },
+                    {
+                        "id": 656085,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-924970-54736.jpg"
+                    },
+                    {
+                        "id": 656086,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2011-land-rover-discovery-4-630523-43b49.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 74850,
+                "stock_num": "8547",
+                "trim": "64088490 - VOLKSWAGEN T5 KOMBI 2.0 TDI SWB (75kW) (2013/11-2016/03)",
+                "mileage": 156000,
+                "year": 2014,
+                "price": 289995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 2,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 656692,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2014-volkswagen-t5-986849-62ff3.jpg"
+                    },
+                    {
+                        "id": 656693,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2014-volkswagen-t5-042158-8f53a.jpg"
+                    },
+                    {
+                        "id": 656694,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2014-volkswagen-t5-400965-31fc4.jpg"
+                    },
+                    {
+                        "id": 656695,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2014-volkswagen-t5-154591-6d269.jpg"
+                    },
+                    {
+                        "id": 656696,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2014-volkswagen-t5-802201-8ba70.jpg"
+                    },
+                    {
+                        "id": 656697,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2014-volkswagen-t5-576158-87f19.jpg"
+                    },
+                    {
+                        "id": 656698,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2014-volkswagen-t5-257348-6c374.jpg"
+                    },
+                    {
+                        "id": 656699,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2014-volkswagen-t5-706025-58348.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 74901,
+                "stock_num": "658526",
+                "trim": "44071220 - MERCEDES-BENZ GLC GLC 220 d 4MATIC 9G-TRONIC (2016/04-2019/05)",
+                "mileage": 110000,
+                "year": 2016,
+                "price": 499995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 13,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 657396,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-493533-9289f.jpg"
+                    },
+                    {
+                        "id": 657395,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-787305-46e4b.jpg"
+                    },
+                    {
+                        "id": 657397,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-637805-3939e.jpg"
+                    },
+                    {
+                        "id": 657409,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-091027-185a3.jpg"
+                    },
+                    {
+                        "id": 657403,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-653847-9b9d.jpg"
+                    },
+                    {
+                        "id": 657410,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-133573-1f2d2.jpg"
+                    },
+                    {
+                        "id": 657411,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-816558-9120a.jpg"
+                    },
+                    {
+                        "id": 657412,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-347991-16894.jpg"
+                    },
+                    {
+                        "id": 657413,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-739266-5e0aa.jpg"
+                    },
+                    {
+                        "id": 657414,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-652122-611eb.jpg"
+                    },
+                    {
+                        "id": 657415,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-715154-399f4.jpg"
+                    },
+                    {
+                        "id": 657416,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-321810-59067.jpg"
+                    },
+                    {
+                        "id": 657417,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-317948-3287a.jpg"
+                    },
+                    {
+                        "id": 657418,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-161882-74eb1.jpg"
+                    },
+                    {
+                        "id": 657419,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-mercedes-benz-glc-770029-17954.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 75175,
+                "stock_num": "003652",
+                "trim": "47084200 - NISSAN X-TRAIL 2.0 dCi 4X2 XE (2010/11-2013/04)",
+                "mileage": 128500,
+                "year": 2013,
+                "price": 189995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 2,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 660066,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2013-nissan-x-trail-187754-7aadf.jpg"
+                    },
+                    {
+                        "id": 660067,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2013-nissan-x-trail-181091-5bbd9.jpg"
+                    },
+                    {
+                        "id": 660068,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2013-nissan-x-trail-087991-34cac.jpg"
+                    },
+                    {
+                        "id": 660069,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2013-nissan-x-trail-610849-67784.jpg"
+                    },
+                    {
+                        "id": 660070,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2013-nissan-x-trail-033689-9dbab.jpg"
+                    },
+                    {
+                        "id": 660071,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2013-nissan-x-trail-329231-773b0.jpg"
+                    },
+                    {
+                        "id": 660072,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2013-nissan-x-trail-172920-91507.jpg"
+                    },
+                    {
+                        "id": 660073,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2013-nissan-x-trail-669307-59bd1.jpg"
+                    },
+                    {
+                        "id": 660074,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2013-nissan-x-trail-806500-4f7c.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 75374,
+                "stock_num": "8958",
+                "trim": "64063572 - VOLKSWAGEN JETTA 1.6 TDI COMFORTLINE (2014/12-2016/07)",
+                "mileage": 138000,
+                "year": 2016,
+                "price": 229995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 14,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 662080,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-385471-e7b5.jpg"
+                    },
+                    {
+                        "id": 662081,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-700470-6a12c.jpg"
+                    },
+                    {
+                        "id": 662082,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-628811-84c75.jpg"
+                    },
+                    {
+                        "id": 662083,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-966386-18536.jpg"
+                    },
+                    {
+                        "id": 662084,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-032597-5c3d8.jpg"
+                    },
+                    {
+                        "id": 662085,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-764544-515ec.jpg"
+                    },
+                    {
+                        "id": 662086,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-462539-1cf1c.jpg"
+                    },
+                    {
+                        "id": 662087,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-157753-5e603.jpg"
+                    },
+                    {
+                        "id": 662088,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-698725-4dd58.jpg"
+                    },
+                    {
+                        "id": 662089,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-302154-2f491.jpg"
+                    },
+                    {
+                        "id": 662090,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-395340-9bf12.jpg"
+                    },
+                    {
+                        "id": 662091,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-247150-33b94.jpg"
+                    },
+                    {
+                        "id": 662092,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2016-volkswagen-jetta-758056-9cb3b.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 77132,
+                "stock_num": "02145",
+                "trim": "60036550 - TOYOTA HILUX 2.5 D-4D D/CAB R/BODY RAIDER LEGEND 45 (2014/10-2016/02)",
+                "mileage": 127000,
+                "year": 2015,
+                "price": 329995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 2,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 684109,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2015-toyota-hilux-161785-7f403.jpg"
+                    },
+                    {
+                        "id": 684110,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2015-toyota-hilux-311683-6f9d.jpg"
+                    },
+                    {
+                        "id": 684111,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2015-toyota-hilux-350534-8ed93.jpg"
+                    },
+                    {
+                        "id": 684112,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2015-toyota-hilux-682584-bf23.jpg"
+                    },
+                    {
+                        "id": 684113,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2015-toyota-hilux-516983-89b78.jpg"
+                    },
+                    {
+                        "id": 684114,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2015-toyota-hilux-200619-7bc72.jpg"
+                    },
+                    {
+                        "id": 684115,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2015-toyota-hilux-803616-1026f.jpg"
+                    },
+                    {
+                        "id": 684116,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2015-toyota-hilux-534590-94307.jpg"
+                    },
+                    {
+                        "id": 684117,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2015-toyota-hilux-504107-912a0.jpg"
+                    },
+                    {
+                        "id": 684118,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                        "photo": "2015-toyota-hilux-093622-5c9f.jpg"
+                    }
+                ]
+            },
+            {
+                "error": false,
+                "id": 77687,
+                "stock_num": "03256",
+                "trim": "26516521 - HYUNDAI i20 1.4 FLUID AT (2012/08-2015/06)",
+                "mileage": 91000,
+                "year": 2014,
+                "price": 149995,
+                "cost_price": null,
+                "state": 2,
+                "colour": 12,
+                "regNo": null,
+                "slug": "Auto-Unique-SA",
+                "vin": null,
+                "motorgroup": {
+                    "id": 46,
+                    "name": "Auto Unique SA",
+                    "slug": "Auto-Unique-SA"
+                },
+                "dealer": {
+                    "id": 204,
+                    "name": "Auto Unique"
+                },
+                "make": null,
+                "photos": [
+                    {
+                        "id": 689046,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-03/",
+                        "photo": "2014-hyundai-i20-151141-77157.jpg"
+                    },
+                    {
+                        "id": 689048,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-03/",
+                        "photo": "2014-hyundai-i20-839579-75e32.jpg"
+                    },
+                    {
+                        "id": 689049,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-03/",
+                        "photo": "2014-hyundai-i20-187838-1449a.jpg"
+                    },
+                    {
+                        "id": 689051,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-03/",
+                        "photo": "2014-hyundai-i20-153189-80c59.jpg"
+                    },
+                    {
+                        "id": 689052,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-03/",
+                        "photo": "2014-hyundai-i20-393778-388a9.jpg"
+                    },
+                    {
+                        "id": 689053,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-03/",
+                        "photo": "2014-hyundai-i20-540442-259a8.jpg"
+                    },
+                    {
+                        "id": 689054,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-03/",
+                        "photo": "2014-hyundai-i20-605575-93424.jpg"
+                    },
+                    {
+                        "id": 689055,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-03/",
+                        "photo": "2014-hyundai-i20-495595-8c3da.jpg"
+                    },
+                    {
+                        "id": 689056,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-03/",
+                        "photo": "2014-hyundai-i20-328824-9aef7.jpg"
+                    },
+                    {
+                        "id": 689057,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-03/",
+                        "photo": "2014-hyundai-i20-360879-5a048.jpg"
+                    },
+                    {
+                        "id": 689058,
+                        "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-03/",
+                        "photo": "2014-hyundai-i20-496636-78bc2.jpg"
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+----------------------------------------------------------------
+https://truth.carsalesportal.co.za/api/stockphotos/77132
+{
+    "data": {
+        "error": false,
+        "photos": [
+            {
+                "id": 684109,
+                "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                "photo": "2015-toyota-hilux-161785-7f403.jpg"
+            },
+            {
+                "id": 684110,
+                "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                "photo": "2015-toyota-hilux-311683-6f9d.jpg"
+            },
+            {
+                "id": 684111,
+                "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                "photo": "2015-toyota-hilux-350534-8ed93.jpg"
+            },
+            {
+                "id": 684112,
+                "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                "photo": "2015-toyota-hilux-682584-bf23.jpg"
+            },
+            {
+                "id": 684113,
+                "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                "photo": "2015-toyota-hilux-516983-89b78.jpg"
+            },
+            {
+                "id": 684114,
+                "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                "photo": "2015-toyota-hilux-200619-7bc72.jpg"
+            },
+            {
+                "id": 684115,
+                "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                "photo": "2015-toyota-hilux-803616-1026f.jpg"
+            },
+            {
+                "id": 684116,
+                "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                "photo": "2015-toyota-hilux-534590-94307.jpg"
+            },
+            {
+                "id": 684117,
+                "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                "photo": "2015-toyota-hilux-504107-912a0.jpg"
+            },
+            {
+                "id": 684118,
+                "directory": "/Auto-Unique-SA/Auto-Unique-SA/cars-for-sale/2020-02/",
+                "photo": "2015-toyota-hilux-093622-5c9f.jpg"
+            }
+        ]
+    }
+}
