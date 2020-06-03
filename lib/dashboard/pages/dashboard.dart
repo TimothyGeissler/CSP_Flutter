@@ -35,21 +35,9 @@ class _DashboardState extends State<Dashboard> {
       stats_list = globals.stats_list;
     });
 
-    cleanData();
-
     super.initState();
   }
 
-  cleanData() {
-    for (int i = 0; i < dealer_model.dealers.length; i++) {
-      try {
-        print("Valid: " + stats_list[i].stats[1].total.toString());
-      } catch (e) {
-        print("Missing data: " + i.toString() + " -- Repairing...");
-        stats_list[i].stats.add(new Stats(count: 0, total: "R0"));
-      }
-    }
-  }
 
   String getDealerStat(int dealer_no, int stat_pos, String data) {
     //data = count or total
