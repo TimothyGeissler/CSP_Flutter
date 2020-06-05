@@ -6,12 +6,14 @@ import 'package:dio/dio.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_login_signup/login/components/login_model.dart';
+import 'package:flutter_login_signup/stock/pages/stock_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_login_signup/vars.dart' as globals;
-import 'package:flutter_login_signup/dashboard/components/dealer_model.dart';
+import 'package:flutter_login_signup/dashboard/components/dealer_model.dart' as dealer;
 import 'package:flutter_login_signup/dashboard/components/dealer_stats_model.dart';
 import 'package:flutter_login_signup/dashboard/components/pie_chart.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
+import 'package:flutter_login_signup/stock/components/dealerstock_model.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -19,11 +21,14 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  DealerModel dealer_model = new DealerModel();
-  List<Dealer> dealers_list = new List();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  dealer.DealerModel dealer_model = new dealer.DealerModel();
+  List<dealer.Dealer> dealers_list = new List();
   List<DealerStatsModel> stats_list = new List();
 
-  TextEditingController searchController = new TextEditingController();
+  int pageNo = 0;
+  PageController _pageController = new PageController();
 
   @override
   void initState() {
@@ -33,6 +38,11 @@ class _DashboardState extends State<Dashboard> {
       dealer_model = globals.dealer_model;
       dealers_list = globals.dealers_list;
       stats_list = globals.stats_list;
+    });
+
+    _pageController.addListener(() {
+      pageNo = _pageController.page.toInt();
+      //print("Current page: " + pageNo.toString());
     });
 
     super.initState();
@@ -58,12 +68,14 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void dispose() {
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
           "CSP Mobile",
@@ -80,6 +92,7 @@ class _DashboardState extends State<Dashboard> {
                       end: Alignment.bottomLeft,
                       colors: [Color(0xffffd500), Color(0xffff9900)])),
               child: PageView.builder(
+                controller: _pageController,
                 itemBuilder: (context, position) {
                   return _buildPage(position);
                 },
@@ -94,11 +107,68 @@ class _DashboardState extends State<Dashboard> {
           label: Text("Stock"),
           backgroundColor: Colors.white,
           elevation: 20.0,
-          onPressed: () {
+          onPressed: () async {
+            _scaffoldKey.currentState.showSnackBar(
+                new SnackBar(
+                  //duration: new Duration(seconds: 5),
+                  content: new Row(
+                    children: <Widget>[
+                      new CircularProgressIndicator(),
+                      new Text("  Fetching Stock")
+                    ],
+                  ),
+                )
+            );
+            globals.dealer_stock_no = pageNo;
+            //get required stock data
+            List<StockData> sd = await getStockData();
+            globals.stock_data = sd;
             //Navigate to stock page
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => StockPage()),
+            );
           }),
     );
   }
+
+
+  Future<List<StockData>> getStockData() async {
+    List<StockData> result = new List();
+    for (int i = 1; i <=2; i++) {
+      await loadDetails(dealer_model.dealers[globals.dealer_stock_no].id, i).then((value) {
+        result.add(value);
+      });
+    }
+    return result;
+  }
+
+  Future<StockData> loadDetails(int dealer_id, int state_id) async {
+    //state_id 1 = unpublished, 2 = published
+    var token = "Bearer " + globals.token;
+    var url = globals.getDealerStock + dealer_id.toString() + "/" + state_id.toString();
+    print("Getting stock details @ " + url);
+    var response = await http.get(
+      url,
+      headers: <String, String>{
+        'Authorization': token,
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+    );
+    print(response.body);
+    print(response.statusCode.toString());
+    final jsonResponse = json.decode(response.body);
+    try {
+      StockData stockData = new StockData.fromJson(jsonResponse);
+      print(stockData.data.error.toString());
+      return stockData;
+    } catch (e) {
+      print("Failed getting dealerstock");
+      return null;
+    }
+  }
+
 
   Widget _buildPage(int position) {
     return Container(
