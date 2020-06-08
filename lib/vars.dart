@@ -8,6 +8,7 @@ final String login = "https://truth.carsalesportal.co.za/api/login";
 final String getDealers = "https://truth.carsalesportal.co.za/api/dealers";
 final String getDealerData = "https://truth.carsalesportal.co.za/api/dealerstats/";
 final String getDealerStock = "https://truth.carsalesportal.co.za/api/dealerstock/"; // <dealer_id>/<state_id>
+final String base_img_url = "https://truth.carsalesportal.co.za/cdn";// <directory> + (thumb-) + <photo>
 
 String token;
 DealerModel dealer_model = new DealerModel();
