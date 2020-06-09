@@ -205,144 +205,116 @@ class _DashboardState extends State<Dashboard> {
         child: Container(
           child: Column(
             children: <Widget>[
-              /*Padding(
-                  padding: EdgeInsets.only(
-                      top: 10.0, bottom: 20.0, left: 30.0, right: 30.0),
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(26),
-                      ),
-                      child: Theme(
-                        child: Material(
-                          elevation: 10.0,
-                          shadowColor: Colors.grey.withOpacity(0.6),
-                          borderRadius: BorderRadius.circular(26),
-                          child: TextField(
-                            controller: searchController,
-                            cursorColor: Colors.amber,
-                            decoration: InputDecoration(
-                              hintText: "Search stock",
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Colors.grey,
-                              ),
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 20.0, horizontal: 10.0),
-                            ),
-                          ),
-                        ),
-                        data:
-                        Theme.of(context).copyWith(primaryColor: Colors.grey),
-                      )
-                  )
-              ),*/
               Padding(
                 padding: EdgeInsets.only(bottom: 20.0),
-                child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(26)),
-                    elevation: 10.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(0.0),
-                            child: Text(
-                              "Used Cars",
-                              style: TextStyle(
-                                  fontSize: 23.0, fontWeight: FontWeight.w600),
+                child: GestureDetector(
+                  onTap: () {
+                    print('used cars tapped');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => StockPage()),
+                    );
+                  },
+                  child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(26)),
+                      elevation: 10.0,
+                      child: Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.all(0.0),
+                              child: Text(
+                                "Used Cars",
+                                style: TextStyle(
+                                    fontSize: 23.0, fontWeight: FontWeight.w600),
+                              ),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(left: 15.0, right: 15.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      "Listed",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      getDealerStat(position, 1, 'count'),
-                                      style: TextStyle(
-                                          color: Colors.green[400],
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 24),
-                                    ),
-                                    Text(
-                                      getDealerStat(position, 1, 'total'),
-                                      style: TextStyle(
-                                          color: Colors.green[400],
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 15),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              AnimatedCircularChart(
-                                key: _chartKey,
-                                size: const Size(100.0, 100.0),
-                                initialChartData: <CircularStackEntry>[
-                                  new CircularStackEntry(
-                                    <CircularSegmentEntry>[
-                                      new CircularSegmentEntry(
-                                        double.tryParse(getDealerStat(position, 0, 'count')),
-                                          Colors.red[400],
-                                          rankKey: 'Unpublished'),
-                                      new CircularSegmentEntry(
-                                        double.tryParse(getDealerStat(position, 1, 'count')),
-                                          Colors.green[400],
-                                          rankKey: 'Published'),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Padding(
+                                  padding:
+                                  EdgeInsets.only(left: 15.0, right: 15.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        "Listed",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        getDealerStat(position, 1, 'count'),
+                                        style: TextStyle(
+                                            color: Colors.green[400],
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 24),
+                                      ),
+                                      Text(
+                                        getDealerStat(position, 1, 'total'),
+                                        style: TextStyle(
+                                            color: Colors.green[400],
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15),
+                                      )
                                     ],
-                                    rankKey: 'Published cars',
                                   ),
-                                ],
-                                chartType: CircularChartType.Pie,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(left: 15.0, right: 15.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      "Unlisted",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      getDealerStat(position, 0, 'count'),
-                                      style: TextStyle(
-                                          color: Colors.red[400],
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 24),
-                                    ),
-                                    Text(
-                                      getDealerStat(position, 0, 'total'),
-                                      style: TextStyle(
-                                          color: Colors.red[400],
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14),
-                                    )
-                                  ],
                                 ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    )),
+                                AnimatedCircularChart(
+                                  key: _chartKey,
+                                  size: const Size(100.0, 100.0),
+                                  initialChartData: <CircularStackEntry>[
+                                    new CircularStackEntry(
+                                      <CircularSegmentEntry>[
+                                        new CircularSegmentEntry(
+                                            double.tryParse(getDealerStat(position, 0, 'count')),
+                                            Colors.red[400],
+                                            rankKey: 'Unpublished'),
+                                        new CircularSegmentEntry(
+                                            double.tryParse(getDealerStat(position, 1, 'count')),
+                                            Colors.green[400],
+                                            rankKey: 'Published'),
+                                      ],
+                                      rankKey: 'Published cars',
+                                    ),
+                                  ],
+                                  chartType: CircularChartType.Pie,
+                                ),
+                                Padding(
+                                  padding:
+                                  EdgeInsets.only(left: 15.0, right: 15.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        "Unlisted",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        getDealerStat(position, 0, 'count'),
+                                        style: TextStyle(
+                                            color: Colors.red[400],
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 24),
+                                      ),
+                                      Text(
+                                        getDealerStat(position, 0, 'total'),
+                                        style: TextStyle(
+                                            color: Colors.red[400],
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      )),
+                )
               ),
               Card(
                   shape: RoundedRectangleBorder(

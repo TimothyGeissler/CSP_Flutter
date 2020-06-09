@@ -15,6 +15,7 @@ import 'package:flutter_login_signup/dashboard/components/pie_chart.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:flutter_login_signup/stock/components/dealerstock_model.dart';
 import 'package:flutter_login_signup/stock/pages/bubble_indicator_painter.dart';
+import 'package:flutter_login_signup/details/pages/details_page.dart';
 
 class StockPage extends StatefulWidget {
   @override
@@ -46,7 +47,6 @@ class _StockPageState extends State<StockPage> {
     });
 
 
-
     super.initState();
   }
 
@@ -60,7 +60,6 @@ class _StockPageState extends State<StockPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(title: Text("CSP Mobile", style: TextStyle(fontSize: 27.0),), backgroundColor: Colors.white,),
       resizeToAvoidBottomInset: false,
       body: Center(
           child: Container(
@@ -71,30 +70,29 @@ class _StockPageState extends State<StockPage> {
                       colors: [Color(0xffffd500), Color(0xffff9900)])),
               child: Container(
                   child: Column(
-                    //crossAxisAlignment: CrossAxisAlignment.end,
+                //crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(top: 20.0, left: 20.0, bottom: 0.0),
-                            child: Text(
-                              dealer_model.dealers[globals.dealer_stock_no].name,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 40.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        child: doublePage(context),
+                      Padding(
+                        padding:
+                            EdgeInsets.only(top: 40.0, left: 20.0, bottom: 0.0),
+                        child: Text(
+                          dealer_model.dealers[globals.dealer_stock_no].name,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 40.0,
+                              fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ],
-                  ))
-          )
-      ),
+                  ),
+                  Container(
+                    child: doublePage(context),
+                  ),
+                ],
+              )))),
     );
   }
 
@@ -106,6 +104,16 @@ class _StockPageState extends State<StockPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 20.0,
+              ),
+            ),
             Padding(
               padding: EdgeInsets.only(top: 50.0, left: 20.0, bottom: 10.0),
               child: Text(
@@ -135,10 +143,13 @@ class _StockPageState extends State<StockPage> {
         physics: NeverScrollableScrollPhysics(),
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height >= 775.0 ? MediaQuery.of(context).size.height : 589.0,
+          height: MediaQuery.of(context).size.height - 90,
           decoration: new BoxDecoration(
             gradient: new LinearGradient(
-                colors: [Colors.transparent, Colors.transparent],//[Color(0xffffd500), Color(0xffff9900)],
+                colors: [
+                  Colors.transparent,
+                  Colors.transparent
+                ], //[Color(0xffffd500), Color(0xffff9900)],
                 begin: const FractionalOffset(0.0, 0.0),
                 end: const FractionalOffset(1.0, 1.0),
                 stops: [0.0, 1.0],
@@ -200,7 +211,8 @@ class _StockPageState extends State<StockPage> {
   }
 
   String parseTrim(String trim) {
-    String result = trim.substring(trim.indexOf('-') + 2, trim.lastIndexOf("("));
+    String result =
+        trim.substring(trim.indexOf('-') + 2, trim.lastIndexOf("("));
     return result;
   }
 
@@ -226,7 +238,8 @@ class _StockPageState extends State<StockPage> {
 
   Image thumbnailFetcher(List<Stocks> data, int index) {
     try {
-      String directory = data[index].photos[0].directory, filename = data[index].photos[0].photo;
+      String directory = data[index].photos[0].directory,
+          filename = data[index].photos[0].photo;
 
       var token = "Bearer " + globals.token;
       print("Getting thumbnail: " + filename);
@@ -239,100 +252,96 @@ class _StockPageState extends State<StockPage> {
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json'
         },
-        height: 100,
+        height: 120,
         width: 120,
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
       );
       return thumbnail;
     } catch (e) {
       return Image(
-          image: AssetImage(
-              'assets/images/car_icon.png',
-          ),
-        height: 100,
-        width: 100,
+        image: AssetImage(
+          'assets/images/car_icon.png',
+        ),
+        height: 120,
+        width: 120,
       );
     }
-
-
   }
 
   Widget _listBuilder(BuildContext context, List<Stocks> data) {
     return Padding(
-      padding: EdgeInsets.only(top: 20.0),
-      child: Scrollbar(
-        child: new ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return new GestureDetector(
-                onTap: () {
-                  print("Card: " + index.toString() + " clicked");
-                },
-                child: Card(
+        padding: EdgeInsets.only(top: 20.0),
+        child: Scrollbar(
+          child: new ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return new GestureDetector(
+                  onTap: () {
+                    print("Card: " + index.toString() + " clicked\nOpening details window...");
+                    globals.stock_details = data[index];
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Detail()),
+                    );
+                  },
+                  child: Card(
                     elevation: 3.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: 10.0, left: 10.0),
-                          child: Text(
-                            parseTrim(data[index].trim),
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600
-                            ),
-                          ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: thumbnailFetcher(data, index),
                         ),
-                        Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(left: 10.0, top: 0.0, right: 15.0),
-                              //child: Icon(Icons.directions_car, size: 100.0,),
-                              child: thumbnailFetcher(data, index)
-                            ),
-                            Column(
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10.0),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
-                                  padding: EdgeInsets.only(bottom: 12.0),
-                                  child: Text("Stock No: " + data[index].stock_num),
+                                  padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
+                                  child: Text(
+                                    parseTrim(data[index].trim),
+                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 0.0),
+                                  child:
+                                  Text("Stock No: " + data[index].stock_num),
                                 ),
                                 Row(
                                   children: <Widget>[
                                     Padding(
                                       padding: EdgeInsets.only(right: 10.0),
-                                      child: Text("Year: " + data[index].year.toString()),
+                                      child: Text(
+                                          "Year: " + data[index].year.toString()),
                                     ),
-                                    Text("Mileage: " + data[index].mileage.toString() + "km"),
+                                    Text("Mileage: " +
+                                        data[index].mileage.toString() +
+                                        "km"),
                                   ],
                                 ),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: 10.0, right: 20.0, top: 5.0),
+                                    child: Text(
+                                      "Price: " + parsePrice(data[index].price),
+                                      style: TextStyle(
+                                          color: Colors.green[400],
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18),
+                                    ))
                               ],
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Padding(
-                                padding: EdgeInsets.only(bottom: 15.0, right: 20.0),
-                                child: Text(
-                                  "Price: " + parsePrice(data[index].price),
-                                  style: TextStyle(
-                                      color: Colors.green[400],
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18
-                                  ),
-                                )
-                            )
-                          ],
+                            ),
+                          )
                         )
                       ],
-                    )
-                ),
-              );
-            }
-        ),
-      )
-    );
+                    ),
+                  ),
+                );
+              }),
+        ));
   }
 
   Widget _buildMenuBar(BuildContext context, PageController _pageController) {
@@ -353,7 +362,7 @@ class _StockPageState extends State<StockPage> {
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onPressed: () {
-                  _onSignInButtonPress(_pageController);
+                  _onUnpublishedButtonPress(_pageController);
                 },
                 child: Text(
                   "Unpublished",
@@ -369,8 +378,8 @@ class _StockPageState extends State<StockPage> {
               child: FlatButton(
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
-                onPressed:() {
-                  _onSignUpButtonPress(_pageController);
+                onPressed: () {
+                  _onPublishedButtonPress(_pageController);
                 },
                 child: Text(
                   "Published",
@@ -387,14 +396,13 @@ class _StockPageState extends State<StockPage> {
     );
   }
 
-  void _onSignInButtonPress(PageController _pageController) {
+  void _onUnpublishedButtonPress(PageController _pageController) {
     _pageController.animateToPage(0,
         duration: Duration(milliseconds: 500), curve: Curves.decelerate);
   }
 
-  void _onSignUpButtonPress(PageController _pageController) {
+  void _onPublishedButtonPress(PageController _pageController) {
     _pageController?.animateToPage(1,
         duration: Duration(milliseconds: 500), curve: Curves.decelerate);
   }
 }
-

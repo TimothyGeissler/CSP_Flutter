@@ -18,3 +18,4 @@ List<stock.StockData> stock_data = new List();
 
 String dealer_name;
 int dealer_stock_no;
+stock.Stocks stock_details; //parsed to Details
