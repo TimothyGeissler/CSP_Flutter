@@ -68,9 +68,24 @@ class _LoginPageState extends State<LoginPage> {
                 end: Alignment.bottomLeft,
                 colors: [Color(0xffffd500), Color(0xffff9900)])),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            loginLogo(),
-            loginForm(),
+            Column(
+              children: <Widget>[
+                loginLogo(),
+                loginForm(),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 10.0),
+              child: Text(
+                  "© 2020 T.Geissler, CSP.",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13
+                ),
+              ),
+            )
           ],
         ),
       )),
