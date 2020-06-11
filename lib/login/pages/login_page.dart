@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_login_signup/vars.dart' as globals;
 import 'package:flutter_login_signup/dashboard/pages/dashboard.dart';
 import 'package:flutter_login_signup/dashboard/components/dealer_stats_model.dart';
+import 'package:flutter_login_signup/login/components/Color.dart' as colourMap;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -225,6 +226,7 @@ class _LoginPageState extends State<LoginPage> {
       //pre init data
       await getDealers();
       await getDealerStats();
+      await getColourData();
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Dashboard()),
@@ -235,8 +237,26 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void getDealerStock() async {
+  void getColourData() async {
+    var token = "Bearer " + globals.token;
+    var response = await http.get(
+      globals.colourMap,
+      headers: <String, String>{
+        'Authorization': token,
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+    );
+    print(response.body + " : " + response.statusCode.toString());
+    final jsonResponse = json.decode(response.body);
+    try {
+      colourMap.ColourData colourData = new colourMap.ColourData.fromJson(jsonResponse);
+      print("ColourData error? " + colourData.colourList.error.toString());
+      globals.colourData = colourData;
 
+    } catch (e) {
+      print("Failed getting colour data");
+    }
   }
 
   void getDealers() async {

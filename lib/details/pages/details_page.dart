@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_login_signup/login/components/login_model.dart';
@@ -18,6 +19,12 @@ import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:flutter_login_signup/stock/components/dealerstock_model.dart';
 import 'package:flutter_login_signup/stock/pages/bubble_indicator_painter.dart';
 
+import 'package:flutter_login_signup/details/components/progress_button.dart';
+import 'package:progress_state_button/iconed_button.dart';
+import 'package:progress_state_button/progress_button.dart';
+
+import 'package:flutter_login_signup/login/components/Color.dart' as colourMap;
+
 class Detail extends StatefulWidget {
   @override
   _DetailState createState() => _DetailState();
@@ -25,6 +32,8 @@ class Detail extends StatefulWidget {
 
 class _DetailState extends State<Detail> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  bool published;
 
   TextEditingController c1 = new TextEditingController();
   TextEditingController c2 = new TextEditingController();
@@ -40,12 +49,27 @@ class _DetailState extends State<Detail> {
       ScrollController(initialScrollOffset: 0.0);
 
   List<String> fieldLabels = new List.unmodifiable([
-    "Stock No.", "Price (R)", "Cost Price (R)", "Year", "Mileage (km)", "Published",
-    "Colour", "VIN", "Reg. No."]);
-  List<IconData> icons = new List.unmodifiable([Icons.format_list_numbered,
-    Icons.attach_money, Icons.monetization_on, Icons.calendar_today,
-    Icons.timeline, Icons.book, Icons.color_lens, Icons.directions_car,
-    Icons.info_outline]);
+    "Stock No.",
+    "Price (R)",
+    "Cost Price (R)",
+    "Year",
+    "Mileage (km)",
+    "Published",
+    "Colour",
+    "VIN",
+    "Reg. No."
+  ]);
+  List<IconData> icons = new List.unmodifiable([
+    Icons.format_list_numbered,
+    Icons.attach_money,
+    Icons.monetization_on,
+    Icons.calendar_today,
+    Icons.timeline,
+    Icons.book,
+    Icons.color_lens,
+    Icons.directions_car,
+    Icons.info_outline
+  ]);
 
   Stocks data;
 
@@ -63,33 +87,69 @@ class _DetailState extends State<Detail> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollHeader();
     });
+
+    //init published var
+    parsePublished(data.state);
     super.initState();
   }
 
   @override
   void dispose() {
+    c1.dispose();
+    c2.dispose();
+    c3.dispose();
+    c4.dispose();
+    c5.dispose();
+    c6.dispose();
+    c7.dispose();
+    c8.dispose();
+
     super.dispose();
   }
 
   void scrollHeader() {
-    scrollController.animateTo(scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 5000), curve: Curves.ease);
-    Timer(Duration(milliseconds: 7000), () {
-      scrollController.animateTo(0.0,
+    try {
+      scrollController.animateTo(scrollController.position.maxScrollExtent,
           duration: Duration(milliseconds: 5000), curve: Curves.ease);
-    });
+      Timer(Duration(milliseconds: 7000), () {
+        scrollController.animateTo(0.0,
+            duration: Duration(milliseconds: 5000), curve: Curves.ease);
+      });
+    } catch (e) {
+      print("Failed animating title: " + e.toString());
+    }
   }
 
-  void fillLists() {
-    hint_texts.add(data.stock_num);
-    hint_texts.add(data.price.toString());
-    hint_texts.add(data.cost_price.toString());
-    hint_texts.add(data.year.toString());
-    hint_texts.add(data.mileage.toString());
-    hint_texts.add(data.state.toString());
-    hint_texts.add(data.colour.toString());
-    hint_texts.add(data.vin);
-    hint_texts.add(data.regNo);
+  String parseColor(int colourInt) {
+    String result = "Colour not found";
+    //print("Translating colour: " + colourInt.toString());
+    colourMap.ColourData colourData = globals.colourData;
+    int len = colourData.colourList.colours.length;
+    for (int i = 0; i < len; i++) {
+      if (colourData.colourList.colours[i].id == colourInt) {
+        result = colourData.colourList.colours[i].colour;
+      }
+    }
+    //print("Colour translated: " + result);
+    return result;
+  }
+
+  bool parsePublished(int publishedInt) {
+    if (publishedInt == 1) {
+      published = false;
+    } else {
+      published = true;
+    }
+  }
+  
+  String parseStrings(String input) {
+    if (input == null) {
+      return "";
+    } else if (input == "null") {
+      return "";
+    } else {
+      return input;
+    }
   }
 
   @override
@@ -136,10 +196,39 @@ class _DetailState extends State<Detail> {
                   ),
                   Container(
                     child: doublePage(context),
-                  )
+                  ),
                 ],
               ))),
+      floatingActionButton: FloatingActionButton.extended(
+          icon: Icon(
+            Icons.save,
+            color: Colors.amber,
+            size: 30,
+          ),
+          label: Text("Save"),
+          backgroundColor: Colors.white,
+          elevation: 20.0,
+          onPressed: () async {
+            _scaffoldKey.currentState.showSnackBar(
+                new SnackBar(
+                  //duration: new Duration(seconds: 5),
+                  content: new Row(
+                    children: <Widget>[
+                      new CircularProgressIndicator(),
+                      new Text("  Saving")
+                    ],
+                  ),
+                )
+            );
+            print("clicked");
+
+          }),
     );
+  }
+
+  bool saveData() {
+
+    return true;
   }
 
   Widget doublePage(BuildContext context) {
@@ -213,15 +302,20 @@ class _DetailState extends State<Detail> {
     return Container(
         child: ListView(
       children: <Widget>[
-        textfieldWidget(context, c1, data.stock_num, icons[0], fieldLabels[0]),
-        textfieldWidget(context, c2, data.price.toString(), icons[1], fieldLabels[1]),
-        textfieldWidget(context, c3, data.cost_price.toString(), icons[2], fieldLabels[2]),
-        textfieldWidget(context, c4, data.year.toString(), icons[3], fieldLabels[3]),
-        textfieldWidget(context, c5, data.mileage.toString(), icons[4], fieldLabels[4]),
-        textfieldWidget(context, c6, data.state.toString(), icons[5], fieldLabels[5]),
-        textfieldWidget(context, c7, data.colour.toString(), icons[6], fieldLabels[6]),
-        textfieldWidget(context, c8, data.vin, icons[7], fieldLabels[7]),
-        textfieldWidget(context, c9, data.regNo, icons[8], fieldLabels[8]),
+        textfieldWidget(context, c1, parseStrings(data.stock_num), icons[0], fieldLabels[0]),
+        textfieldWidget(
+            context, c2, parseStrings(data.price.toString()), icons[1], fieldLabels[1]),
+        textfieldWidget(
+            context, c3, parseStrings(data.cost_price.toString()), icons[2], fieldLabels[2]),
+        textfieldWidget(
+            context, c4, parseStrings(data.year.toString()), icons[3], fieldLabels[3]),
+        textfieldWidget(
+            context, c5, parseStrings(data.mileage.toString()), icons[4], fieldLabels[4]),
+        toggleWidget(context),
+        textfieldWidget(
+            context, c6, parseColor(data.colour), icons[6], fieldLabels[6]),
+        textfieldWidget(context, c7, parseStrings(data.vin), icons[7], fieldLabels[7]),
+        textfieldWidget(context, c8, parseStrings(data.regNo), icons[8], fieldLabels[8]),
       ],
     ));
   }
@@ -293,12 +387,67 @@ class _DetailState extends State<Detail> {
         duration: Duration(milliseconds: 500), curve: Curves.decelerate);
   }
 
+  Widget toggleWidget(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.only(top: 12.0, left: 20.0, right: 20.0),
+        child: Container(
+            decoration: BoxDecoration(
+                color: Color(0xffebebeb),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.6),
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                    offset: Offset(0, 4),
+                  )
+                ]),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 15, left: 15.0, right: 10.0, bottom: 15.0),
+                      child: Icon(
+                        Icons.book,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      child: Text(
+                        "Published",
+                        style: TextStyle(
+                            color: Colors.grey[600]
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 20.0),
+                  child: CupertinoSwitch(
+                    value: published,
+                    onChanged: (bool value) {
+                      setState(() {
+                        published = value;
+                      });
+                      print("Toggle published changed: " + value.toString());
+                    },
+                  ),
+                )
+              ],
+            )
+        )
+    );
+  }
+
   Widget textfieldWidget(BuildContext context, TextEditingController controller,
       String text, IconData icon, String title) {
     controller.text = text;
     return Padding(
-        padding: EdgeInsets.only(
-            top: 12.0, left: 20.0, right: 20.0),
+        padding: EdgeInsets.only(top: 12.0, left: 20.0, right: 20.0),
         child: Container(
             decoration: BoxDecoration(
                 color: Color(0xffebebeb),
@@ -324,8 +473,8 @@ class _DetailState extends State<Detail> {
                   enabledBorder: InputBorder.none,
                   errorBorder: InputBorder.none,
                   disabledBorder: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 10.0),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                 ),
               ),
               data: Theme.of(context).copyWith(primaryColor: Colors.grey),

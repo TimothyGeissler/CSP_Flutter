@@ -28,6 +28,8 @@ dependencies:
   http: ^0.12.1
   dio: ^3.0.9
   flutter_circular_chart: ^0.1.0
+  progress_state_button: ^1.0.1
+
 
 dev_dependencies:
   flutter_test:
