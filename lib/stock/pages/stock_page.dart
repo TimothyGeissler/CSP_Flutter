@@ -16,6 +16,7 @@ import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:flutter_login_signup/stock/components/dealerstock_model.dart';
 import 'package:flutter_login_signup/stock/pages/bubble_indicator_painter.dart';
 import 'package:flutter_login_signup/details/pages/details_page.dart';
+import 'package:flutter_login_signup/stock/components/dealerstock_model.dart' as stock;
 
 class StockPage extends StatefulWidget {
   @override
@@ -29,6 +30,7 @@ class _StockPageState extends State<StockPage> {
 
   List<DealerStatsModel> stats_list = new List();
   List<StockData> stockData = new List();
+  List<ImageProvider> photos = new List();
 
   Color left = Colors.black;
   Color right = Colors.white;
@@ -268,6 +270,41 @@ class _StockPageState extends State<StockPage> {
     }
   }
 
+  List<ImageProvider> loadImages(List<stock.Photo> data) {
+    List<ImageProvider> images = new List();
+    for (int i = 0; i < data.length; i++) {
+      //print("Getting img: " + data[i].id.toString());
+      images.add(imgFetcher(data, i));
+    }
+    return images;
+  }
+
+  ImageProvider imgFetcher(List<Photo> data, int index) {
+    try {
+      String directory = data[index].directory,
+          filename = data[index].photo;
+
+      var token = "Bearer " + globals.token;
+      print("Getting photo: " + filename);
+      String url = globals.base_img_url;
+      String photo_request = url + directory + filename;
+      NetworkImage photo = NetworkImage(
+        photo_request,
+        headers: <String, String>{
+          'Authorization': token,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json'
+        },
+      );
+      return photo;
+    } catch (e) {
+      return AssetImage(
+        'assets/images/car_icon.png',
+      );
+    }
+  }
+
+
   Widget _listBuilder(BuildContext context, List<Stocks> data) {
     return Padding(
         padding: EdgeInsets.only(top: 20.0),
@@ -279,6 +316,8 @@ class _StockPageState extends State<StockPage> {
                   onTap: () {
                     print("Card: " + index.toString() + " clicked\nOpening details window...");
                     globals.stock_details = data[index];
+                    //globals.photos = data[index].photos;
+                    globals.img_provider_photos = loadImages(data[index].photos);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Detail()),

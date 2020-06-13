@@ -1,5 +1,7 @@
 library csp.globals;
 
+import 'package:flutter/cupertino.dart';
+
 import 'dashboard/components/dealer_model.dart';
 import 'dashboard/components/dealer_stats_model.dart';
 import 'stock/components/dealerstock_model.dart' as stock;
@@ -17,6 +19,8 @@ DealerModel dealer_model = new DealerModel();
 List<Dealer> dealers_list = new List();
 List<DealerStatsModel> stats_list = new List();
 List<stock.StockData> stock_data = new List();
+List<stock.Photo> photos = new List();
+List<ImageProvider> img_provider_photos = new List();
 
 
 colorMap.ColourData colourData;

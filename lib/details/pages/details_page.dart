@@ -71,6 +71,8 @@ class _DetailState extends State<Detail> {
     Icons.info_outline
   ]);
 
+  List<ImageProvider> photos = new List();
+
   Stocks data;
 
   List<String> hint_texts = new List();
@@ -82,6 +84,8 @@ class _DetailState extends State<Detail> {
   void initState() {
     setState(() {
       data = globals.stock_details;
+      //init images
+     // loadImages();
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -90,6 +94,7 @@ class _DetailState extends State<Detail> {
 
     //init published var
     parsePublished(data.state);
+
     super.initState();
   }
 
@@ -107,17 +112,53 @@ class _DetailState extends State<Detail> {
     super.dispose();
   }
 
+  void loadImages() async {
+    for (int i = 0; i < globals.photos.length; i++) {
+      await photos.add(imgFetcher(globals.photos, i));
+    }
+  }
+
+  ImageProvider imgFetcher(List<Photo> data, int index) {
+    try {
+      String directory = data[index].directory,
+          filename = data[index].photo;
+
+      var token = "Bearer " + globals.token;
+      print("Getting photo: " + filename);
+      String url = globals.base_img_url;
+      String photo_request = url + directory + filename;
+      NetworkImage photo = NetworkImage(
+        photo_request,
+        headers: <String, String>{
+          'Authorization': token,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json'
+        },
+      );
+      return photo;
+    } catch (e) {
+      return AssetImage(
+        'assets/images/car_icon.png',
+      );
+    }
+  }
+
   void scrollHeader() {
     try {
       scrollController.animateTo(scrollController.position.maxScrollExtent,
           duration: Duration(milliseconds: 5000), curve: Curves.ease);
-      Timer(Duration(milliseconds: 7000), () {
+    } catch (e) {
+      print("failed animating title: " + e.toString());
+    }
+    Timer(Duration(milliseconds: 7000), () {
+      try {
         scrollController.animateTo(0.0,
             duration: Duration(milliseconds: 5000), curve: Curves.ease);
-      });
-    } catch (e) {
-      print("Failed animating title: " + e.toString());
-    }
+      } catch (e) {
+        print("Failed animating title: " + e.toString());
+      }
+    });
+
   }
 
   String parseColor(int colourInt) {
@@ -321,9 +362,66 @@ class _DetailState extends State<Detail> {
   }
 
   Widget _buildPhotosPage(BuildContext context) {
+
     return Container(
-      child: Text("Photos"),
+      child: new ListView.builder(
+          itemCount: globals.img_provider_photos.length,
+          itemBuilder: (BuildContext context, int index) {
+            return new GestureDetector(
+              onTap: () {
+
+              },
+              child: Card(
+                elevation: 3.0,
+                child: Stack(
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image(
+                        image: globals.img_provider_photos[index],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 5.0, right: 5.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              deleteImg(index);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(32),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          )
+                        )
+                      ],
+                    ),
+                  ],
+                )
+              ),
+            );
+          }),
     );
+  }
+
+  void deleteImg(int index) {
+    print("Delete img: " + index.toString());
+  }
+
+  void galleryPageChanged() {
+    print("page changed");
   }
 
   Widget _buildMenuBar(BuildContext context, PageController _pageController) {
