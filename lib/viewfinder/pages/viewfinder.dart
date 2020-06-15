@@ -95,44 +95,54 @@ class ViewfinderState extends State<Viewfinder> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.camera_alt,
-          color: Colors.white,
-        ),
-        // Provide an onPressed callback.
-        onPressed: () async {
-          // Take the Picture in a try / catch block. If anything goes wrong,
-          // catch the error.
-          try {
-            // Ensure that the camera is initialized.
-            await _initializeControllerFuture;
-
-            // Construct the path where the image should be saved using the
-            // pattern package.
-            final path = join(
-              // Store the picture in the temp directory.
-              // Find the temp directory using the `path_provider` plugin.
-              (await getTemporaryDirectory()).path,
-              '${DateTime.now()}.png',
-            );
-
-            // Attempt to take a picture and log where it's been saved.
-            await _controller.takePicture(path);
-            globals.image_captured = path;
-            // If the picture was taken, display it on a new screen.
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(),
+      floatingActionButton: SizedBox(
+        height: 65,
+        width: 65,
+        child: Container(
+          child: FloatingActionButton(
+            child: Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Icon(
+                Icons.camera_alt,
+                color: Colors.white,
               ),
-            );
-          } catch (e) {
-            // If an error occurs, log the error to the console.
-            print(e);
-          }
-        },
+            ),
+            // Provide an onPressed callback.
+            onPressed: () async {
+              // Take the Picture in a try / catch block. If anything goes wrong,
+              // catch the error.
+              try {
+                // Ensure that the camera is initialized.
+                await _initializeControllerFuture;
+
+                // Construct the path where the image should be saved using the
+                // pattern package.
+                final path = join(
+                  // Store the picture in the temp directory.
+                  // Find the temp directory using the `path_provider` plugin.
+                  (await getTemporaryDirectory()).path,
+                  '${DateTime.now()}.jpg',
+                );
+
+                // Attempt to take a picture and log where it's been saved.
+                await _controller.takePicture(path);
+                globals.image_captured = path;
+                // If the picture was taken, display it on a new screen.
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DisplayPictureScreen(),
+                  ),
+                );
+              } catch (e) {
+                // If an error occurs, log the error to the console.
+                print(e);
+              }
+            },
+          ),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -150,12 +160,20 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
   //_DisplayPictureState({Key key, this.image});
 
   @override
+  void initState() {
+    _cropImage();
+
+    super.initState();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
     return Scaffold(
       key: _scaffoldKey,
-        appBar: AppBar(title: Text('Display the Picture')),
+        appBar: AppBar(title: Text('Upload Picture')),
         // The image is stored as a file on the device. Use the `Image.file`
         // constructor with the given path to display the image. Image.file(File(imagePath))
         body: Center(
@@ -165,13 +183,18 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
                         begin: Alignment.topRight,
                         end: Alignment.bottomLeft,
                         colors: [Color(0xffffd500), Color(0xffff9900)])),
-                child: ListView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Image.file(image),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.0),
+                      child: Image.file(image),
+                    ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 10.0),
+                          padding: EdgeInsets.only(left: 15.0, bottom: 20.0),
                           child: GestureDetector(
                             child: Container(
                               decoration: BoxDecoration(
@@ -187,7 +210,7 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
                                   ]),
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                    top: 12.0, bottom: 12.0, left: 42.0, right: 42.0),
+                                    top: 12.0, bottom: 12.0, left: 70.0, right: 70.0),
                                 child: Icon(
                                   Icons.check,
                                   color: Colors.amber,
@@ -212,7 +235,7 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 10.0),
+                          padding: EdgeInsets.only(right: 15.0, bottom: 20.0),
                           child: GestureDetector(
                             child: Container(
                               decoration: BoxDecoration(
@@ -228,7 +251,7 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
                                   ]),
                               child: Padding(
                                   padding: EdgeInsets.only(
-                                      top: 12.0, bottom: 12.0, left: 42.0, right: 42.0),
+                                      top: 12.0, bottom: 12.0, left: 70.0, right: 70.0),
                                   child: Icon(
                                       Icons.close,
                                     color: Colors.amber,
@@ -237,18 +260,7 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
                               ),
                             ),
                             onTap: () async {
-                              _scaffoldKey.currentState.showSnackBar(
-                                  new SnackBar(
-                                    //duration: new Duration(seconds: 5),
-                                    content: new Row(
-                                      children: <Widget>[
-                                        new CircularProgressIndicator(),
-                                        new Text("  Saving")
-                                      ],
-                                    ),
-                                  )
-                              );
-                              _cropImage();
+                              Navigator.pop(context);
                             },
                           ),
                         )
