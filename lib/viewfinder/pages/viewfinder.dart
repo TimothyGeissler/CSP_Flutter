@@ -3,9 +3,12 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:image_crop/image_crop.dart';
+import 'package:flutter_login_signup/login/components/Color.dart' as colorMap;
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
+import 'package:image_cropper/image_cropper.dart';
+
+import 'package:flutter_login_signup/vars.dart' as globals;
 
 Future<void> main() async {
   // Ensure that plugin services are initialized so that `availableCameras()`
@@ -71,6 +74,7 @@ class ViewfinderState extends State<Viewfinder> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -83,7 +87,7 @@ class ViewfinderState extends State<Viewfinder> {
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            // If the Future is complete, display the preview.
+            // If the Future is complete, display the preview. CameraPreview(_controller);
             return CameraPreview(_controller);
           } else {
             // Otherwise, display a loading indicator.
@@ -115,12 +119,12 @@ class ViewfinderState extends State<Viewfinder> {
 
             // Attempt to take a picture and log where it's been saved.
             await _controller.takePicture(path);
-
+            globals.image_captured = path;
             // If the picture was taken, display it on a new screen.
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(imagePath: path),
+                builder: (context) => DisplayPictureScreen(),
               ),
             );
           } catch (e) {
@@ -131,17 +135,22 @@ class ViewfinderState extends State<Viewfinder> {
       ),
     );
   }
+
+}
+
+class DisplayPictureScreen extends StatefulWidget {
+  @override
+  _DisplayPictureState createState() => _DisplayPictureState();
 }
 
 // A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
+class _DisplayPictureState extends State<DisplayPictureScreen> {
+  File image = File(globals.image_captured);
 
-  const DisplayPictureScreen({Key key, this.imagePath}) : super(key: key);
+  //_DisplayPictureState({Key key, this.image});
 
   @override
   Widget build(BuildContext context) {
-    final cropKey = GlobalKey<CropState>();
     final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
     return Scaffold(
@@ -156,9 +165,9 @@ class DisplayPictureScreen extends StatelessWidget {
                         begin: Alignment.topRight,
                         end: Alignment.bottomLeft,
                         colors: [Color(0xffffd500), Color(0xffff9900)])),
-                child: Column(
+                child: ListView(
                   children: <Widget>[
-                    Image.file(File(imagePath)),
+                    Image.file(image),
                     Row(
                       children: <Widget>[
                         Padding(
@@ -166,10 +175,7 @@ class DisplayPictureScreen extends StatelessWidget {
                           child: GestureDetector(
                             child: Container(
                               decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      begin: Alignment.topRight,
-                                      end: Alignment.bottomLeft,
-                                      colors: [Color(0xffffbb00), Color(0xffff9900)]),
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(32),
                                   boxShadow: [
                                     BoxShadow(
@@ -181,9 +187,11 @@ class DisplayPictureScreen extends StatelessWidget {
                                   ]),
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                    top: 15.0, bottom: 15.0, left: 45.0, right: 45.0),
+                                    top: 12.0, bottom: 12.0, left: 42.0, right: 42.0),
                                 child: Icon(
-                                  Icons.check
+                                  Icons.check,
+                                  color: Colors.amber,
+                                  size: 35,
                                 )
                               ),
                             ),
@@ -208,10 +216,7 @@ class DisplayPictureScreen extends StatelessWidget {
                           child: GestureDetector(
                             child: Container(
                               decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      begin: Alignment.topRight,
-                                      end: Alignment.bottomLeft,
-                                      colors: [Color(0xffffbb00), Color(0xffff9900)]),
+                                color: Colors.white,
                                   borderRadius: BorderRadius.circular(32),
                                   boxShadow: [
                                     BoxShadow(
@@ -223,9 +228,11 @@ class DisplayPictureScreen extends StatelessWidget {
                                   ]),
                               child: Padding(
                                   padding: EdgeInsets.only(
-                                      top: 15.0, bottom: 15.0, left: 45.0, right: 45.0),
+                                      top: 12.0, bottom: 12.0, left: 42.0, right: 42.0),
                                   child: Icon(
-                                      Icons.close
+                                      Icons.close,
+                                    color: Colors.amber,
+                                    size: 35,
                                   )
                               ),
                             ),
@@ -241,7 +248,7 @@ class DisplayPictureScreen extends StatelessWidget {
                                     ),
                                   )
                               );
-                              //handleLogin();
+                              _cropImage();
                             },
                           ),
                         )
@@ -252,6 +259,44 @@ class DisplayPictureScreen extends StatelessWidget {
             )
         )
     );
+  }
+
+  Future<Null> _cropImage() async {
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ]
+            : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Crop Image',
+            toolbarColor: Colors.white,
+            activeControlsWidgetColor: Colors.amber,
+            toolbarWidgetColor: Colors.black,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Crop Image',
+        ));
+    if (croppedFile != null) {
+      setState(() {
+        image = croppedFile;
+      });
+    }
   }
 
 }

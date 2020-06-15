@@ -12,7 +12,7 @@ class ColourData {
 
 class ColorList {
   final bool error;
-  final List<Color> colours;
+  final List<Colour> colours;
 
   ColorList({this.error, this.colours});
 
@@ -20,7 +20,7 @@ class ColorList {
 
     var list = json['colours'] as List;
     print(list.runtimeType); //returns List<dynamic>
-    List<Color> imagesList = list.map((i) => Color.fromJson(i)).toList();
+    List<Colour> imagesList = list.map((i) => Colour.fromJson(i)).toList();
 
     return ColorList(
       error: json['error'],
@@ -29,15 +29,15 @@ class ColorList {
   }
 }
 
-class Color {
+class Colour {
   final bool error;
   final int id;
   final String colour;
 
-  Color({this.error, this.id, this.colour});
+  Colour({this.error, this.id, this.colour});
 
-  factory Color.fromJson(Map<String, dynamic> json) {
-    return Color(
+  factory Colour.fromJson(Map<String, dynamic> json) {
+    return Colour(
       error: json['error'],
       id: json['id'],
       colour: json['colour'],

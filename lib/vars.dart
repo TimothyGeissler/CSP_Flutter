@@ -1,6 +1,7 @@
 library csp.globals;
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'dashboard/components/dealer_model.dart';
 import 'dashboard/components/dealer_stats_model.dart';
@@ -27,3 +28,4 @@ colorMap.ColourData colourData;
 String dealer_name;
 int dealer_stock_no;
 stock.Stocks stock_details; //parsed to Details
+String image_captured;

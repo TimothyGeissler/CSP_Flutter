@@ -472,7 +472,7 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
   Widget toggleFAB() {
     return Container(
       child: FloatingActionButton(
-        elevation: 7.0,
+        //elevation: 7.0,
         backgroundColor: Colors.white,
         onPressed: animate,
         tooltip: 'Toggle',
