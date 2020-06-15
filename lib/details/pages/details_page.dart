@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'dart:async';
 
+import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -21,6 +22,7 @@ import 'package:flutter_login_signup/stock/pages/bubble_indicator_painter.dart';
 
 import 'package:flutter_login_signup/details/components/progress_button.dart';
 import 'package:progress_state_button/iconed_button.dart';
+import 'package:flutter_login_signup/viewfinder/pages/viewfinder.dart';
 import 'package:progress_state_button/progress_button.dart';
 
 import 'package:flutter_login_signup/login/components/Color.dart' as colourMap;
@@ -30,8 +32,16 @@ class Detail extends StatefulWidget {
   _DetailState createState() => _DetailState();
 }
 
-class _DetailState extends State<Detail> {
+class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, WidgetsBindingObserver{
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  bool isOpened = false;
+  AnimationController _animationController;
+  Animation<Color> _buttonColor;
+  Animation<double> _animateIcon;
+  Animation<double> _translateButton;
+  Curve _curve = Curves.easeOut;
+  double _fabHeight = 56.0;
 
   bool published;
 
@@ -82,10 +92,42 @@ class _DetailState extends State<Detail> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
+
+    _animationController =
+    AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+      ..addListener(() {
+        setState(() {});
+      });
+    _animateIcon =
+        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+    _buttonColor = ColorTween(
+      begin: const Color(0xFF2C365E),
+      end: Colors.grey,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Interval(
+        0.00,
+        1.00,
+        curve: Curves.linear,
+      ),
+    ));
+    _translateButton = Tween<double>(
+      begin: _fabHeight,
+      end: -14.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Interval(
+        0.0,
+        0.75,
+        curve: _curve,
+      ),
+    ));
+
     setState(() {
       data = globals.stock_details;
       //init images
-     // loadImages();
+      // loadImages();
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -109,7 +151,19 @@ class _DetailState extends State<Detail> {
     c7.dispose();
     c8.dispose();
 
+    WidgetsBinding.instance.removeObserver(this);
+    _animationController.dispose();
+
     super.dispose();
+  }
+
+  animate() {
+    if (!isOpened) {
+      _animationController.forward();
+    } else {
+      _animationController.reverse();
+    }
+    isOpened = !isOpened;
   }
 
   void loadImages() async {
@@ -120,8 +174,7 @@ class _DetailState extends State<Detail> {
 
   ImageProvider imgFetcher(List<Photo> data, int index) {
     try {
-      String directory = data[index].directory,
-          filename = data[index].photo;
+      String directory = data[index].directory, filename = data[index].photo;
 
       var token = "Bearer " + globals.token;
       print("Getting photo: " + filename);
@@ -158,7 +211,6 @@ class _DetailState extends State<Detail> {
         print("Failed animating title: " + e.toString());
       }
     });
-
   }
 
   String parseColor(int colourInt) {
@@ -182,7 +234,7 @@ class _DetailState extends State<Detail> {
       published = true;
     }
   }
-  
+
   String parseStrings(String input) {
     if (input == null) {
       return "";
@@ -212,7 +264,7 @@ class _DetailState extends State<Detail> {
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
                       colors: [Color(0xffffd500), Color(0xffff9900)])),
-              child: Column(
+              child: Wrap(
                 children: <Widget>[
                   SingleChildScrollView(
                     controller: scrollController,
@@ -240,35 +292,33 @@ class _DetailState extends State<Detail> {
                   ),
                 ],
               ))),
-      floatingActionButton: FloatingActionButton.extended(
-          icon: Icon(
-            Icons.save,
-            color: Colors.amber,
-            size: 30,
+      floatingActionButton: new Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Transform(
+            transform: Matrix4.translationValues(
+              0.0,
+              //_translateButton.value * 3.0,
+              _translateButton.value * 2.0,
+              0.0,
+            ),
+            child: cameraFAB(),
           ),
-          label: Text("Save"),
-          backgroundColor: Colors.white,
-          elevation: 20.0,
-          onPressed: () async {
-            _scaffoldKey.currentState.showSnackBar(
-                new SnackBar(
-                  //duration: new Duration(seconds: 5),
-                  content: new Row(
-                    children: <Widget>[
-                      new CircularProgressIndicator(),
-                      new Text("  Saving")
-                    ],
-                  ),
-                )
-            );
-            print("clicked");
-
-          }),
+          Transform(
+            transform: Matrix4.translationValues(
+              0.0,
+              _translateButton.value,
+              0.0,
+            ),
+            child: saveFAB(),
+          ),
+          toggleFAB(),
+        ],
+      )
     );
   }
 
   bool saveData() {
-
     return true;
   }
 
@@ -343,35 +393,33 @@ class _DetailState extends State<Detail> {
     return Container(
         child: ListView(
       children: <Widget>[
-        textfieldWidget(context, c1, parseStrings(data.stock_num), icons[0], fieldLabels[0]),
-        textfieldWidget(
-            context, c2, parseStrings(data.price.toString()), icons[1], fieldLabels[1]),
-        textfieldWidget(
-            context, c3, parseStrings(data.cost_price.toString()), icons[2], fieldLabels[2]),
-        textfieldWidget(
-            context, c4, parseStrings(data.year.toString()), icons[3], fieldLabels[3]),
-        textfieldWidget(
-            context, c5, parseStrings(data.mileage.toString()), icons[4], fieldLabels[4]),
+        textfieldWidget(context, c1, parseStrings(data.stock_num), icons[0],
+            fieldLabels[0]),
+        textfieldWidget(context, c2, parseStrings(data.price.toString()),
+            icons[1], fieldLabels[1]),
+        textfieldWidget(context, c3, parseStrings(data.cost_price.toString()),
+            icons[2], fieldLabels[2]),
+        textfieldWidget(context, c4, parseStrings(data.year.toString()),
+            icons[3], fieldLabels[3]),
+        textfieldWidget(context, c5, parseStrings(data.mileage.toString()),
+            icons[4], fieldLabels[4]),
         toggleWidget(context),
         textfieldWidget(
             context, c6, parseColor(data.colour), icons[6], fieldLabels[6]),
-        textfieldWidget(context, c7, parseStrings(data.vin), icons[7], fieldLabels[7]),
-        textfieldWidget(context, c8, parseStrings(data.regNo), icons[8], fieldLabels[8]),
+        textfieldWidget(
+            context, c7, parseStrings(data.vin), icons[7], fieldLabels[7]),
+        textfieldWidget(
+            context, c8, parseStrings(data.regNo), icons[8], fieldLabels[8]),
       ],
     ));
   }
 
   Widget _buildPhotosPage(BuildContext context) {
-
     return Container(
       child: new ListView.builder(
           itemCount: globals.img_provider_photos.length,
           itemBuilder: (BuildContext context, int index) {
-            return new GestureDetector(
-              onTap: () {
-
-              },
-              child: Card(
+            return Card(
                 elevation: 3.0,
                 child: Stack(
                   children: <Widget>[
@@ -386,32 +434,29 @@ class _DetailState extends State<Detail> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(top: 5.0, right: 5.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              deleteImg(index);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(32),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
+                            padding: EdgeInsets.only(top: 5.0, right: 5.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                deleteImg(index);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(32),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
-                        )
+                            ))
                       ],
                     ),
                   ],
-                )
-              ),
-            );
+                ));
           }),
     );
   }
@@ -422,6 +467,81 @@ class _DetailState extends State<Detail> {
 
   void galleryPageChanged() {
     print("page changed");
+  }
+
+  Widget toggleFAB() {
+    return Container(
+      child: FloatingActionButton(
+        elevation: 7.0,
+        backgroundColor: Colors.white,
+        onPressed: animate,
+        tooltip: 'Toggle',
+        child: AnimatedIcon(
+          icon: AnimatedIcons.menu_close,
+          color: Colors.amber,
+          progress: _animateIcon,
+        ),
+      ),
+    );
+  }
+
+  Widget saveFAB() {
+    return Container(
+      child: FloatingActionButton(
+        heroTag: "saveFAB",
+          child: Icon(
+            Icons.save,
+            color: Colors.amber,
+            size: 27,
+          ),
+          backgroundColor: Colors.white,
+          elevation: 7.0,
+          onPressed: () async {
+            _scaffoldKey.currentState.showSnackBar(new SnackBar(
+              //duration: new Duration(seconds: 5),
+              content: new Row(
+                children: <Widget>[
+                  new CircularProgressIndicator(),
+                  new Text("  Saving")
+                ],
+              ),
+            ));
+            print("clicked");
+          }),
+    );
+  }
+
+  Widget cameraFAB() {
+    return Container(
+      child: FloatingActionButton(
+        heroTag: "cameraFAB",
+        elevation: 7.0,
+        backgroundColor: Colors.white,
+        child: Icon(
+          Icons.camera_alt,
+          color: Colors.amber,
+          size: 27,
+        ),
+        onPressed: () async {
+          print("show camera");
+
+          // Ensure that plugin services are initialized so that `availableCameras()`
+          // can be called before `runApp()`
+          WidgetsFlutterBinding.ensureInitialized();
+
+          // Obtain a list of the available cameras on the device.
+          final cameras = await availableCameras();
+
+          // Get a specific camera from the list of available cameras.
+          final firstCamera = cameras.first;
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Viewfinder(camera: firstCamera,)),
+          );
+        },
+      ),
+    );
   }
 
   Widget _buildMenuBar(BuildContext context, PageController _pageController) {
@@ -506,7 +626,8 @@ class _DetailState extends State<Detail> {
                 Row(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(top: 15, left: 15.0, right: 10.0, bottom: 15.0),
+                      padding: EdgeInsets.only(
+                          top: 15, left: 15.0, right: 10.0, bottom: 15.0),
                       child: Icon(
                         Icons.book,
                         color: Colors.grey[600],
@@ -516,9 +637,7 @@ class _DetailState extends State<Detail> {
                       padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                       child: Text(
                         "Published",
-                        style: TextStyle(
-                            color: Colors.grey[600]
-                        ),
+                        style: TextStyle(color: Colors.grey[600]),
                       ),
                     ),
                   ],
@@ -536,9 +655,7 @@ class _DetailState extends State<Detail> {
                   ),
                 )
               ],
-            )
-        )
-    );
+            )));
   }
 
   Widget textfieldWidget(BuildContext context, TextEditingController controller,
