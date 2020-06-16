@@ -14,6 +14,7 @@ final String getDealerData = "https://truth.carsalesportal.co.za/api/dealerstats
 final String getDealerStock = "https://truth.carsalesportal.co.za/api/dealerstock/"; // <dealer_id>/<state_id>
 final String base_img_url = "https://truth.carsalesportal.co.za/cdn";// <directory> + (thumb-) + <photo>
 final String colourMap = "https://truth.carsalesportal.co.za/api/colours";
+final String upload_img = "https://truth.carsalesportal.co.za/api/photo/upload/"; //<stock_id>
 
 String token;
 DealerModel dealer_model = new DealerModel();

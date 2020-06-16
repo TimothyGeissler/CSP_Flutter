@@ -1,5 +1,14 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_login_signup/stock/components/dealerstock_model.dart';
+import 'package:path/path.dart' as path;
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+import 'package:async/async.dart';
+import 'dart:convert';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:http_parser/http_parser.dart';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +16,7 @@ import 'package:flutter_login_signup/login/components/Color.dart' as colorMap;
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:dio/dio.dart' as dio;
 
 import 'package:flutter_login_signup/vars.dart' as globals;
 
@@ -145,7 +155,6 @@ class ViewfinderState extends State<Viewfinder> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
-
 }
 
 class DisplayPictureScreen extends StatefulWidget {
@@ -159,35 +168,46 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
 
   //_DisplayPictureState({Key key, this.image});
 
+  Stocks data;
+
   @override
   void initState() {
     _cropImage();
 
+    data = globals.stock_details;
+
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+    final GlobalKey<ScaffoldState> _scaffoldKey =
+        new GlobalKey<ScaffoldState>();
 
     return Scaffold(
-      key: _scaffoldKey,
-        appBar: AppBar(title: Text('Upload Picture')),
+        key: _scaffoldKey,
+        appBar: AppBar(
+            title: Text('Upload Picture'),
+          backgroundColor: Colors.white,
+        ),
         // The image is stored as a file on the device. Use the `Image.file`
         // constructor with the given path to display the image. Image.file(File(imagePath))
         body: Center(
             child: Container(
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [Color(0xffffd500), Color(0xffff9900)])),
+                  gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [Color(0xffffbb00), Color(0xffff9900)]),
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                    Container(
+                      child: null,
+                    ),
+                    Container(
+                      //padding: EdgeInsets.only(top: (MediaQuery.of(context).size.height / 2) - 200),
                       child: Image.file(image),
                     ),
                     Row(
@@ -202,35 +222,36 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
                                   borderRadius: BorderRadius.circular(32),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.grey.withOpacity(0.6),
+                                      color: Colors.black.withOpacity(0.3),
                                       spreadRadius: 1,
                                       blurRadius: 4,
                                       offset: Offset(0, 4),
                                     )
                                   ]),
                               child: Padding(
-                                padding: EdgeInsets.only(
-                                    top: 12.0, bottom: 12.0, left: 70.0, right: 70.0),
-                                child: Icon(
-                                  Icons.check,
-                                  color: Colors.amber,
-                                  size: 35,
-                                )
-                              ),
+                                  padding: EdgeInsets.only(
+                                      top: 12.0,
+                                      bottom: 12.0,
+                                      left: 70.0,
+                                      right: 70.0),
+                                  child: Icon(
+                                    Icons.check,
+                                    color: Colors.green[400],
+                                    size: 35,
+                                  )),
                             ),
                             onTap: () async {
-                              _scaffoldKey.currentState.showSnackBar(
-                                  new SnackBar(
-                                    //duration: new Duration(seconds: 5),
-                                    content: new Row(
-                                      children: <Widget>[
-                                        new CircularProgressIndicator(),
-                                        new Text("  Saving")
-                                      ],
-                                    ),
-                                  )
-                              );
-                              //handleLogin();
+                              _scaffoldKey.currentState
+                                  .showSnackBar(new SnackBar(
+                                //duration: new Duration(seconds: 5),
+                                content: new Row(
+                                  children: <Widget>[
+                                    new CircularProgressIndicator(),
+                                    new Text("  Saving")
+                                  ],
+                                ),
+                              ));
+                              uploadImage(image);
                             },
                           ),
                         ),
@@ -239,11 +260,11 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
                           child: GestureDetector(
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(32),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.grey.withOpacity(0.6),
+                                      color: Colors.black.withOpacity(0.3),
                                       spreadRadius: 1,
                                       blurRadius: 4,
                                       offset: Offset(0, 4),
@@ -251,13 +272,15 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
                                   ]),
                               child: Padding(
                                   padding: EdgeInsets.only(
-                                      top: 12.0, bottom: 12.0, left: 70.0, right: 70.0),
+                                      top: 12.0,
+                                      bottom: 12.0,
+                                      left: 70.0,
+                                      right: 70.0),
                                   child: Icon(
-                                      Icons.close,
-                                    color: Colors.amber,
+                                    Icons.close,
+                                    color: Colors.red[400],
                                     size: 35,
-                                  )
-                              ),
+                                  )),
                             ),
                             onTap: () async {
                               Navigator.pop(context);
@@ -267,10 +290,109 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
                       ],
                     )
                   ],
-                )
-            )
-        )
+                ))));
+  }
+
+
+  upload(File imageFile) async {
+    var now = new DateTime.now();
+    String formattedDate = DateFormat('yyyMMdd_HHmmss').format(now);
+    String newPath = path.join(path.dirname(imageFile.path), 'IMG_' + formattedDate + ".jpg");
+    imageFile = imageFile.renameSync(newPath);
+    print("Renamed: " + imageFile.path);
+
+    var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+    var length = await imageFile.length();
+    var token = "Bearer " + globals.token;
+    var uri = Uri.parse(globals.upload_img + data.id.toString());
+
+    var request = new http.MultipartRequest("POST", uri);
+    var multipartFile = new http.MultipartFile('image', stream, length,
+        filename: basename(imageFile.path),);
+    //contentType: new MediaType('image', 'png'));
+
+    Map<String, String> headers = {
+      //"Accept": "application/json",
+      "Authorization": token,
+      //'Content-Type': 'application/json; charset=UTF-8',
+    };
+
+    request.files.add(multipartFile);
+    request.headers.addAll(headers);
+    var response = await request.send();
+    print(response.statusCode);
+    response.stream.transform(utf8.decoder).listen((value) {
+      print(value);
+    });
+  }
+
+  uploadImage(File image) async {
+    print("Uploading: " + image.path);
+
+    compressAndGetFile(image).then((value) async {
+      image = value;
+      print("File to upload: " + image.path + ", size: " + image.lengthSync().toString() + "bytes");
+
+      var token = "Bearer " + globals.token;
+      var stream =
+      new http.ByteStream(DelegatingStream.typed(image.openRead()));
+      // get file length
+      var length = await image.length(); //imageFile is your image file
+      Map<String, String> headers = {
+        //"Accept": "application/json",
+        "Authorization": token,
+        //'Content-Type': 'application/json; charset=UTF-8',
+      }; // ignore this headers if there is no authentication
+
+      // string to uri
+      var uri = Uri.parse(globals.upload_img + data.id.toString());
+      print("URL: " + uri.toString());
+      // create multipart request
+      var request = new http.MultipartRequest("POST", uri);
+
+      // multipart that takes file
+      var multipartFileSign = new http.MultipartFile('upload_img', stream, length,
+          filename: basename(image.path));
+
+      // add file to multipart
+      request.files.add(multipartFileSign);
+
+      //add headers
+      request.headers.addAll(headers);
+
+      // send
+      var response = await request.send();
+
+      print(response.statusCode);
+
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+
+      });
+    });
+  }
+
+  Future<File> compressAndGetFile(File file) async {
+    //rename image
+    String dir = path.dirname(file.path);
+    var now = new DateTime.now();
+    String formattedDate = DateFormat('yyyMMdd_HHmmss').format(now);
+    String newPath = path.join(dir, 'IMG_' + formattedDate + "\.jpg");
+    String targetPath = newPath;
+    var result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path, targetPath,
+      quality: 60,
+      //rotate: 180,
     );
+
+    print("full quality img: " + file.lengthSync().toString() + "bytes");
+    print("compressed: " + result.lengthSync().toString() + "bytes");
+
+    result = result.renameSync(newPath);
+    print("Renamed: " + result.path);
+
+    return result;
   }
 
   Future<Null> _cropImage() async {
@@ -278,22 +400,22 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
         sourcePath: image.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
-        ]
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9
+              ]
             : [
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio5x3,
-          CropAspectRatioPreset.ratio5x4,
-          CropAspectRatioPreset.ratio7x5,
-          CropAspectRatioPreset.ratio16x9
-        ],
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio5x3,
+                CropAspectRatioPreset.ratio5x4,
+                CropAspectRatioPreset.ratio7x5,
+                CropAspectRatioPreset.ratio16x9
+              ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Crop Image',
             toolbarColor: Colors.white,
@@ -310,5 +432,4 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
       });
     }
   }
-
 }
