@@ -19,6 +19,7 @@ import 'package:flutter_login_signup/stock/components/dealerstock_model.dart';
 import 'package:flutter_login_signup/stock/pages/bubble_indicator_painter.dart';
 import 'package:flutter_login_signup/details/pages/details_page.dart';
 import 'package:flutter_login_signup/stock/components/dealerstock_model.dart' as stock;
+import 'package:flutter_login_signup/dashboard/pages/dashboard.dart';
 
 class StockPage extends StatefulWidget {
   @override
@@ -71,6 +72,25 @@ class _StockPageState extends State<StockPage> {
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text(
+          "CSP Mobile",
+          style: TextStyle(fontSize: 27.0),
+        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Dashboard()),
+            );
+          },
+          child: Icon(
+            Icons.arrow_back,  // add custom icons also
+          ),
+        ),
+      ),
       body: Center(
           child: Container(
               decoration: BoxDecoration(
@@ -87,7 +107,7 @@ class _StockPageState extends State<StockPage> {
                     children: <Widget>[
                       Padding(
                         padding:
-                            EdgeInsets.only(top: 40.0, left: 20.0, bottom: 0.0),
+                            EdgeInsets.only(top: 20.0, left: 20.0, bottom: 0.0),
                         child: Text(
                           dealer_model.dealers[globals.dealer_stock_no].name,
                           style: TextStyle(
@@ -153,7 +173,7 @@ class _StockPageState extends State<StockPage> {
         physics: NeverScrollableScrollPhysics(),
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - 90,
+          height: MediaQuery.of(context).size.height - 157,
           decoration: new BoxDecoration(
             gradient: new LinearGradient(
                 colors: [

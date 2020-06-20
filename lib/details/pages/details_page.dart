@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_signup/login/components/login_model.dart';
+import 'package:flutter_login_signup/stock/components/get_stock_data.dart';
 import 'package:flutter_login_signup/stock/components/get_stock_details.dart';
 import 'package:flutter_login_signup/stock/pages/stock_page.dart';
 import 'package:http/http.dart' as http;
@@ -432,6 +433,23 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
     ));
   }
 
+  /*print("show camera");
+
+          // Ensure that plugin services are initialized so that `availableCameras()`
+          // can be called before `runApp()`
+          WidgetsFlutterBinding.ensureInitialized();
+
+          // Obtain a list of the available cameras on the device.
+          final cameras = await availableCameras();
+
+          // Get a specific camera from the list of available cameras.
+          final firstCamera = cameras.first;
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Viewfinder(camera: firstCamera,)),
+          );*/
+
   Widget _buildPhotosPage(BuildContext context) {
     return Container(
       child: new ListView.builder(
@@ -455,7 +473,9 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
                             padding: EdgeInsets.only(top: 5.0, right: 5.0),
                             child: GestureDetector(
                               onTap: () {
-                                deleteImg(index);
+                                setState(() {
+                                  showDeleteAlertDialog(context, globals.stock_details.photos[index].id, index);
+                                });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -478,9 +498,82 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
           }),
     );
   }
+  showDeleteAlertDialog(BuildContext context, int photo_id, int index) {
 
-  void deleteImg(int index) {
-    print("Delete img: " + index.toString());
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text(
+        "Cancel",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 17,
+            //color: Colors.black
+        ),
+      ),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text(
+        "Continue",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 17,
+          //color: Colors.black
+        ),
+      ),
+      onPressed:  () {
+        deleteImg(photo_id, index);
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Confirm Delete"),
+      content: Text("Are you sure you want to delete this image?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void deleteImg(int photo_id, int index) {
+
+    print("Deleting img: " + photo_id.toString());
+    var token = "Bearer " + globals.token;
+    var url = globals.delete_img + photo_id.toString();
+    print("URL: " + url);
+    http.get(
+      url,
+      headers: <String, String>{
+        'Authorization': token,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    ).then((http.Response response) {
+      print(response.body + "\nCode: " + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        print("Deleting image from RAM...");
+        setState(() {
+          globals.img_provider_photos.removeAt(index);
+          photos = globals.img_provider_photos;
+          GetStockDataDetails details = new GetStockDataDetails();
+          details.updateStockDetails();
+        });
+      }
+    });
+
   }
 
   void galleryPageChanged() {

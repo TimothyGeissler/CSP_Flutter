@@ -10,6 +10,7 @@ class GetStockDataDetails {
     GetStockData getStockData = new GetStockData();
 
     getStockData.getStockData().then((value) {
+      globals.stock_data = value;
       globals.stock_details = value[globals.stock_data_indices[0]].data.stocks[globals.stock_data_indices[1]];
       globals.img_provider_photos = loadImages(globals.stock_details.photos);
     });
