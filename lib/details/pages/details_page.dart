@@ -35,7 +35,8 @@ class Detail extends StatefulWidget {
   _DetailState createState() => _DetailState();
 }
 
-class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, WidgetsBindingObserver{
+class _DetailState extends State<Detail>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   bool isOpened = false;
@@ -102,10 +103,10 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
     ]);
 
     _animationController =
-    AnimationController(vsync: this, duration: Duration(milliseconds: 500))
-      ..addListener(() {
-        setState(() {});
-      });
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+          ..addListener(() {
+            setState(() {});
+          });
     _animateIcon =
         Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
     _buttonColor = ColorTween(
@@ -257,85 +258,62 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(
-          "CSP Mobile",
-          style: TextStyle(fontSize: 27.0),
-        ),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => StockPage()),
-            );
-          },
-          child: Icon(
-            Icons.arrow_back,  // add custom icons also
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text(
+            "CSP Mobile",
+            style: TextStyle(fontSize: 27.0),
+          ),
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => StockPage()),
+              );
+            },
+            child: Icon(
+              Icons.arrow_back, // add custom icons also
+            ),
           ),
         ),
-      ),
-      resizeToAvoidBottomInset: false,
-      body: Center(
-          child: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [Color(0xffffd500), Color(0xffff9900)])),
-              child: Wrap(
-                children: <Widget>[
-                  SingleChildScrollView(
-                    controller: scrollController,
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 25.0, left: 20.0, bottom: 0.0),
-                          child: Text(
-                            data.trim.substring(data.trim.indexOf('-') + 2,
-                                data.trim.lastIndexOf("(")),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.w500),
+        resizeToAvoidBottomInset: false,
+        body: Center(
+            child: Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [Color(0xffffd500), Color(0xffff9900)])),
+                child: Wrap(
+                  children: <Widget>[
+                    SingleChildScrollView(
+                      controller: scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: 25.0, left: 20.0, bottom: 0.0),
+                            child: Text(
+                              data.trim.substring(data.trim.indexOf('-') + 2,
+                                  data.trim.lastIndexOf("(")),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30.0,
+                                  fontWeight: FontWeight.w500),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    child: doublePage(context),
-                  ),
-                ],
-              ))),
-      floatingActionButton: new Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Transform(
-            transform: Matrix4.translationValues(
-              0.0,
-              //_translateButton.value * 3.0,
-              _translateButton.value * 2.0,
-              0.0,
-            ),
-            child: cameraFAB(),
-          ),
-          Transform(
-            transform: Matrix4.translationValues(
-              0.0,
-              _translateButton.value,
-              0.0,
-            ),
-            child: saveFAB(),
-          ),
-          toggleFAB(),
-        ],
-      )
+                    Container(
+                      child: doublePage(context),
+                    ),
+                  ],
+                ))),
     );
   }
 
@@ -353,7 +331,7 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
         physics: NeverScrollableScrollPhysics(),
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - 150,
+          height: MediaQuery.of(context).size.height - 145,
           decoration: new BoxDecoration(
             gradient: new LinearGradient(
                 colors: [
@@ -433,7 +411,82 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
     ));
   }
 
-  /*print("show camera");
+
+  Widget _buildPhotosPage(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Flex(
+          direction: Axis.vertical,
+          children: <Widget>[
+            Expanded(
+              child: new ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: globals.img_provider_photos.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                        elevation: 3.0,
+                        child: Stack(
+                          children: <Widget>[
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: Image(
+                                image: globals.img_provider_photos[index],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                    padding: EdgeInsets.only(top: 5.0, right: 5.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          showDeleteAlertDialog(
+                                              context,
+                                              globals
+                                                  .stock_details.photos[index].id,
+                                              index);
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius: BorderRadius.circular(32),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.all(10.0),
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ],
+                        ));
+                  }),
+            ),
+          ],
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            takePhotoCard(context),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget takePhotoCard(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0, bottom: 10.0),
+      child: GestureDetector(
+        onTap: () async {
+          print("show camera");
 
           // Ensure that plugin services are initialized so that `availableCameras()`
           // can be called before `runApp()`
@@ -447,59 +500,42 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Viewfinder(camera: firstCamera,)),
-          );*/
-
-  Widget _buildPhotosPage(BuildContext context) {
-    return Container(
-      child: new ListView.builder(
-          itemCount: globals.img_provider_photos.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-                elevation: 3.0,
-                child: Stack(
-                  children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: Image(
-                        image: globals.img_provider_photos[index],
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.only(top: 5.0, right: 5.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  showDeleteAlertDialog(context, globals.stock_details.photos[index].id, index);
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(32),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ))
-                      ],
-                    ),
-                  ],
-                ));
-          }),
+            MaterialPageRoute(
+                builder: (context) => Viewfinder(
+                  camera: firstCamera,
+                )),
+          );
+        },
+        child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32.0),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.6),
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                    offset: Offset(0, 4),
+                  )
+                ]),
+            child: Padding(
+              padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 10.0),
+                    child: Icon(Icons.add_circle),
+                  ),
+                  Text("Take a Picture"),
+                ],
+              ),
+            )),
+      ),
     );
   }
-  showDeleteAlertDialog(BuildContext context, int photo_id, int index) {
 
+  showDeleteAlertDialog(BuildContext context, int photo_id, int index) {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text(
@@ -507,10 +543,10 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 17,
-            //color: Colors.black
+          //color: Colors.black
         ),
       ),
-      onPressed:  () {
+      onPressed: () {
         Navigator.pop(context);
       },
     );
@@ -523,7 +559,7 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
           //color: Colors.black
         ),
       ),
-      onPressed:  () {
+      onPressed: () {
         deleteImg(photo_id, index);
         Navigator.pop(context);
       },
@@ -549,7 +585,6 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
   }
 
   void deleteImg(int photo_id, int index) {
-
     print("Deleting img: " + photo_id.toString());
     var token = "Bearer " + globals.token;
     var url = globals.delete_img + photo_id.toString();
@@ -573,7 +608,6 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
         });
       }
     });
-
   }
 
   void galleryPageChanged() {
@@ -599,7 +633,7 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
   Widget saveFAB() {
     return Container(
       child: FloatingActionButton(
-        heroTag: "saveFAB",
+          heroTag: "saveFAB",
           child: Icon(
             Icons.save,
             color: Colors.amber,
@@ -648,7 +682,10 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Viewfinder(camera: firstCamera,)),
+            MaterialPageRoute(
+                builder: (context) => Viewfinder(
+                      camera: firstCamera,
+                    )),
           );
         },
       ),
