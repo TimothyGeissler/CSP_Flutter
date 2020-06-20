@@ -9,7 +9,8 @@ import 'package:flutter_login_signup/login/components/login_model.dart';
 import 'package:flutter_login_signup/stock/pages/stock_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_login_signup/vars.dart' as globals;
-import 'package:flutter_login_signup/dashboard/components/dealer_model.dart' as dealer;
+import 'package:flutter_login_signup/dashboard/components/dealer_model.dart'
+    as dealer;
 import 'package:flutter_login_signup/dashboard/components/dealer_stats_model.dart';
 import 'package:flutter_login_signup/dashboard/components/pie_chart.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
@@ -26,6 +27,9 @@ class _DashboardState extends State<Dashboard> {
   dealer.DealerModel dealer_model = new dealer.DealerModel();
   List<dealer.Dealer> dealers_list = new List();
   List<DealerStatsModel> stats_list = new List();
+
+  ScrollController scrollController =
+      ScrollController(initialScrollOffset: 0.0);
 
   int pageNo = 0;
   PageController _pageController = new PageController();
@@ -47,7 +51,6 @@ class _DashboardState extends State<Dashboard> {
 
     super.initState();
   }
-
 
   String getDealerStat(int dealer_no, int stat_pos, String data) {
     //data = count or total
@@ -108,17 +111,15 @@ class _DashboardState extends State<Dashboard> {
           backgroundColor: Colors.white,
           elevation: 20.0,
           onPressed: () async {
-            _scaffoldKey.currentState.showSnackBar(
-                new SnackBar(
-                  //duration: new Duration(seconds: 5),
-                  content: new Row(
-                    children: <Widget>[
-                      new CircularProgressIndicator(),
-                      new Text("  Fetching Stock")
-                    ],
-                  ),
-                )
-            );
+            _scaffoldKey.currentState.showSnackBar(new SnackBar(
+              //duration: new Duration(seconds: 5),
+              content: new Row(
+                children: <Widget>[
+                  new CircularProgressIndicator(),
+                  new Text("  Fetching Stock")
+                ],
+              ),
+            ));
             globals.dealer_stock_no = pageNo;
             //get required stock data
             List<StockData> sd = await getStockData();
@@ -132,11 +133,11 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-
   Future<List<StockData>> getStockData() async {
     List<StockData> result = new List();
-    for (int i = 1; i <=2; i++) {
-      await loadDetails(dealer_model.dealers[globals.dealer_stock_no].id, i).then((value) {
+    for (int i = 1; i <= 2; i++) {
+      await loadDetails(dealer_model.dealers[globals.dealer_stock_no].id, i)
+          .then((value) {
         result.add(value);
       });
     }
@@ -146,7 +147,10 @@ class _DashboardState extends State<Dashboard> {
   Future<StockData> loadDetails(int dealer_id, int state_id) async {
     //state_id 1 = unpublished, 2 = published
     var token = "Bearer " + globals.token;
-    var url = globals.getDealerStock + dealer_id.toString() + "/" + state_id.toString();
+    var url = globals.getDealerStock +
+        dealer_id.toString() +
+        "/" +
+        state_id.toString();
     print("Getting stock details @ " + url);
     var response = await http.get(
       url,
@@ -169,7 +173,6 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
-
   Widget _buildPage(int position) {
     return Container(
         child: Column(
@@ -178,14 +181,16 @@ class _DashboardState extends State<Dashboard> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 20.0, left: 20.0, bottom: 10.0),
-              child: Text(
-                dealer_model.dealers[position].name,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.w500),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(top: 20.0, left: 20.0, bottom: 10.0),
+                child: Text(
+                  dealer_model.dealers[position].name,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.w500),
+                ),
               ),
             ),
           ],
@@ -206,116 +211,118 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(bottom: 20.0),
-                child: GestureDetector(
-                  onTap: () {
-                    print('used cars tapped');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => StockPage()),
-                    );
-                  },
-                  child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(26)),
-                      elevation: 10.0,
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(0.0),
-                              child: Text(
-                                "Used Cars",
-                                style: TextStyle(
-                                    fontSize: 23.0, fontWeight: FontWeight.w600),
+                  padding: EdgeInsets.only(bottom: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      print('used cars tapped');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => StockPage()),
+                      );
+                    },
+                    child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(26)),
+                        elevation: 10.0,
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.all(0.0),
+                                child: Text(
+                                  "Used Cars",
+                                  style: TextStyle(
+                                      fontSize: 23.0,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                  EdgeInsets.only(left: 15.0, right: 15.0),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Text(
-                                        "Listed",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        getDealerStat(position, 1, 'count'),
-                                        style: TextStyle(
-                                            color: Colors.green[400],
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 24),
-                                      ),
-                                      Text(
-                                        getDealerStat(position, 1, 'total'),
-                                        style: TextStyle(
-                                            color: Colors.green[400],
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                AnimatedCircularChart(
-                                  key: _chartKey,
-                                  size: const Size(100.0, 100.0),
-                                  initialChartData: <CircularStackEntry>[
-                                    new CircularStackEntry(
-                                      <CircularSegmentEntry>[
-                                        new CircularSegmentEntry(
-                                            double.tryParse(getDealerStat(position, 0, 'count')),
-                                            Colors.red[400],
-                                            rankKey: 'Unpublished'),
-                                        new CircularSegmentEntry(
-                                            double.tryParse(getDealerStat(position, 1, 'count')),
-                                            Colors.green[400],
-                                            rankKey: 'Published'),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 15.0, right: 15.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text(
+                                          "Listed",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Text(
+                                          getDealerStat(position, 1, 'count'),
+                                          style: TextStyle(
+                                              color: Colors.green[400],
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 24),
+                                        ),
+                                        Text(
+                                          getDealerStat(position, 1, 'total'),
+                                          style: TextStyle(
+                                              color: Colors.green[400],
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15),
+                                        )
                                       ],
-                                      rankKey: 'Published cars',
                                     ),
-                                  ],
-                                  chartType: CircularChartType.Pie,
-                                ),
-                                Padding(
-                                  padding:
-                                  EdgeInsets.only(left: 15.0, right: 15.0),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Text(
-                                        "Unlisted",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        getDealerStat(position, 0, 'count'),
-                                        style: TextStyle(
-                                            color: Colors.red[400],
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 24),
-                                      ),
-                                      Text(
-                                        getDealerStat(position, 0, 'total'),
-                                        style: TextStyle(
-                                            color: Colors.red[400],
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14),
-                                      )
-                                    ],
                                   ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )),
-                )
-              ),
+                                  AnimatedCircularChart(
+                                    key: _chartKey,
+                                    size: const Size(100.0, 100.0),
+                                    initialChartData: <CircularStackEntry>[
+                                      new CircularStackEntry(
+                                        <CircularSegmentEntry>[
+                                          new CircularSegmentEntry(
+                                              double.tryParse(getDealerStat(
+                                                  position, 0, 'count')),
+                                              Colors.red[400],
+                                              rankKey: 'Unpublished'),
+                                          new CircularSegmentEntry(
+                                              double.tryParse(getDealerStat(
+                                                  position, 1, 'count')),
+                                              Colors.green[400],
+                                              rankKey: 'Published'),
+                                        ],
+                                        rankKey: 'Published cars',
+                                      ),
+                                    ],
+                                    chartType: CircularChartType.Pie,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 15.0, right: 15.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text(
+                                          "Unlisted",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Text(
+                                          getDealerStat(position, 0, 'count'),
+                                          style: TextStyle(
+                                              color: Colors.red[400],
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 24),
+                                        ),
+                                        Text(
+                                          getDealerStat(position, 0, 'total'),
+                                          style: TextStyle(
+                                              color: Colors.red[400],
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        )),
+                  )),
               Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(26)),
@@ -369,11 +376,13 @@ class _DashboardState extends State<Dashboard> {
                                 new CircularStackEntry(
                                   <CircularSegmentEntry>[
                                     new CircularSegmentEntry(
-                                      double.tryParse(getDealerStat(position, 2, 'count')),
+                                        double.tryParse(getDealerStat(
+                                            position, 2, 'count')),
                                         Colors.red[400],
                                         rankKey: 'Unpublished'),
                                     new CircularSegmentEntry(
-                                      double.tryParse(getDealerStat(position, 3, 'count')),
+                                        double.tryParse(getDealerStat(
+                                            position, 3, 'count')),
                                         Colors.green[400],
                                         rankKey: 'Published'),
                                   ],

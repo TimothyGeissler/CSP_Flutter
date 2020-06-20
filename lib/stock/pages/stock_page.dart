@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_login_signup/login/components/login_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_login_signup/vars.dart' as globals;
@@ -32,12 +33,18 @@ class _StockPageState extends State<StockPage> {
   List<StockData> stockData = new List();
   List<ImageProvider> photos = new List();
 
+  ScrollController scrollController = ScrollController(initialScrollOffset: 0.0);
+
   Color left = Colors.black;
   Color right = Colors.white;
   //PageController _pageController;
 
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
     //_pageController = PageController();
     // Display data
 

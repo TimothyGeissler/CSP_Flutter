@@ -31,7 +31,7 @@ dependencies:
   flutter_circular_chart: ^0.1.0
   progress_state_button: ^1.0.1
 
-  camera:
+  camera: ^0.5.8+2
   path_provider:
   path:
   image_cropper: ^1.2.3

@@ -9,6 +9,8 @@ import 'package:async/async.dart';
 import 'dart:convert';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +64,11 @@ class ViewfinderState extends State<Viewfinder> {
   @override
   void initState() {
     super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
     // To display the current output from the Camera,
     // create a CameraController.
     _controller = CameraController(
@@ -172,6 +179,10 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
 
   @override
   void initState() {
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     _cropImage();
 
     data = globals.stock_details;
@@ -187,7 +198,7 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-            title: Text('Upload Picture'),
+          title: Text('Upload Picture'),
           backgroundColor: Colors.white,
         ),
         // The image is stored as a file on the device. Use the `Image.file`
@@ -293,55 +304,24 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
                 ))));
   }
 
-
-  upload(File imageFile) async {
-    var now = new DateTime.now();
-    String formattedDate = DateFormat('yyyMMdd_HHmmss').format(now);
-    String newPath = path.join(path.dirname(imageFile.path), 'IMG_' + formattedDate + ".jpg");
-    imageFile = imageFile.renameSync(newPath);
-    print("Renamed: " + imageFile.path);
-
-    var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-    var length = await imageFile.length();
-    var token = "Bearer " + globals.token;
-    var uri = Uri.parse(globals.upload_img + data.id.toString());
-
-    var request = new http.MultipartRequest("POST", uri);
-    var multipartFile = new http.MultipartFile('image', stream, length,
-        filename: basename(imageFile.path),);
-    //contentType: new MediaType('image', 'png'));
-
-    Map<String, String> headers = {
-      //"Accept": "application/json",
-      "Authorization": token,
-      //'Content-Type': 'application/json; charset=UTF-8',
-    };
-
-    request.files.add(multipartFile);
-    request.headers.addAll(headers);
-    var response = await request.send();
-    print(response.statusCode);
-    response.stream.transform(utf8.decoder).listen((value) {
-      print(value);
-    });
-  }
-
   uploadImage(File image) async {
     print("Uploading: " + image.path);
 
     compressAndGetFile(image).then((value) async {
       image = value;
-      print("File to upload: " + image.path + ", size: " + image.lengthSync().toString() + "bytes");
+      print("File to upload: " +
+          image.path +
+          ", size: " +
+          image.lengthSync().toString() +
+          "bytes");
 
       var token = "Bearer " + globals.token;
       var stream =
-      new http.ByteStream(DelegatingStream.typed(image.openRead()));
+          new http.ByteStream(DelegatingStream.typed(image.openRead()));
       // get file length
       var length = await image.length(); //imageFile is your image file
       Map<String, String> headers = {
-        //"Accept": "application/json",
         "Authorization": token,
-        //'Content-Type': 'application/json; charset=UTF-8',
       }; // ignore this headers if there is no authentication
 
       // string to uri
@@ -351,7 +331,8 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
       var request = new http.MultipartRequest("POST", uri);
 
       // multipart that takes file
-      var multipartFileSign = new http.MultipartFile('upload_img', stream, length,
+      var multipartFileSign = new http.MultipartFile(
+          'image', stream, length,
           filename: basename(image.path));
 
       // add file to multipart
@@ -368,7 +349,6 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
-
       });
     });
   }

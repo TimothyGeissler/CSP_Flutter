@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_login_signup/login/components/login_model.dart';
 import 'package:flutter_login_signup/stock/pages/stock_page.dart';
 import 'package:http/http.dart' as http;
@@ -93,6 +94,10 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
 
     _animationController =
     AnimationController(vsync: this, duration: Duration(milliseconds: 500))
