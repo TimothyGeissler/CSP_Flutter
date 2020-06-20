@@ -20,7 +20,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:dio/dio.dart' as dio;
 
+import 'package:flutter_login_signup/stock/components/get_stock_details.dart';
 import 'package:flutter_login_signup/vars.dart' as globals;
+import 'package:flutter_login_signup/details/pages/details_page.dart';
+import 'package:flutter_login_signup/stock/components/get_stock_data.dart';
 
 Future<void> main() async {
   // Ensure that plugin services are initialized so that `availableCameras()`
@@ -177,6 +180,9 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
 
   Stocks data;
 
+  bool uploadedVisibility = false;
+  bool confirmRejectVisibility = true;
+
   @override
   void initState() {
 
@@ -221,81 +227,142 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
                       //padding: EdgeInsets.only(top: (MediaQuery.of(context).size.height / 2) - 200),
                       child: Image.file(image),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Stack(
                       children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 15.0, bottom: 20.0),
-                          child: GestureDetector(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(32),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.3),
-                                      spreadRadius: 1,
-                                      blurRadius: 4,
-                                      offset: Offset(0, 4),
-                                    )
-                                  ]),
-                              child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 12.0,
-                                      bottom: 12.0,
-                                      left: 70.0,
-                                      right: 70.0),
-                                  child: Icon(
-                                    Icons.check,
-                                    color: Colors.green[400],
-                                    size: 35,
-                                  )),
-                            ),
-                            onTap: () async {
-                              _scaffoldKey.currentState
-                                  .showSnackBar(new SnackBar(
-                                //duration: new Duration(seconds: 5),
-                                content: new Row(
-                                  children: <Widget>[
-                                    new CircularProgressIndicator(),
-                                    new Text("  Saving")
-                                  ],
+                        Visibility(
+                          visible: confirmRejectVisibility,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(left: 15.0, bottom: 20.0),
+                                child: GestureDetector(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(32),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.3),
+                                            spreadRadius: 1,
+                                            blurRadius: 4,
+                                            offset: Offset(0, 4),
+                                          )
+                                        ]),
+                                    child: Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 12.0,
+                                            bottom: 12.0,
+                                            left: 70.0,
+                                            right: 70.0),
+                                        child: Icon(
+                                          Icons.check,
+                                          color: Colors.green[400],
+                                          size: 35,
+                                        )),
+                                  ),
+                                  onTap: () async {
+                                    _scaffoldKey.currentState
+                                        .showSnackBar(new SnackBar(
+                                      //duration: new Duration(seconds: 5),
+                                      content: new Row(
+                                        children: <Widget>[
+                                          new CircularProgressIndicator(),
+                                          new Text("  Saving")
+                                        ],
+                                      ),
+                                    ));
+                                    uploadImage(image);
+                                  },
                                 ),
-                              ));
-                              uploadImage(image);
-                            },
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 15.0, bottom: 20.0),
+                                child: GestureDetector(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(32),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.3),
+                                            spreadRadius: 1,
+                                            blurRadius: 4,
+                                            offset: Offset(0, 4),
+                                          )
+                                        ]),
+                                    child: Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 12.0,
+                                            bottom: 12.0,
+                                            left: 70.0,
+                                            right: 70.0),
+                                        child: Icon(
+                                          Icons.close,
+                                          color: Colors.red[400],
+                                          size: 35,
+                                        )),
+                                  ),
+                                  onTap: () async {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 15.0, bottom: 20.0),
-                          child: GestureDetector(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(32),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.3),
-                                      spreadRadius: 1,
-                                      blurRadius: 4,
-                                      offset: Offset(0, 4),
+                        Visibility(
+                          visible: uploadedVisibility,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 20.0),
+                            child: GestureDetector(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(32),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.3),
+                                        spreadRadius: 1,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 4),
+                                      )
+                                    ]),
+                                child: Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 12.0,
+                                        bottom: 12.0,
+                                        left: 70.0,
+                                        right: 70.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.check,
+                                          color: Colors.green[400],
+                                          size: 35,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 0.0),
+                                          child: Text(
+                                            "Image Uploaded",
+                                            style: TextStyle(
+                                                color: Colors.green[400],
+                                                fontSize: 20
+                                            ),
+                                          ),
+                                        )
+                                      ],
                                     )
-                                  ]),
-                              child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 12.0,
-                                      bottom: 12.0,
-                                      left: 70.0,
-                                      right: 70.0),
-                                  child: Icon(
-                                    Icons.close,
-                                    color: Colors.red[400],
-                                    size: 35,
-                                  )),
+                                ),
+                              ),
+                              onTap: () async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Detail()),
+                                );
+                              },
                             ),
-                            onTap: () async {
-                              Navigator.pop(context);
-                            },
                           ),
                         )
                       ],
@@ -347,9 +414,20 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
       print(response.statusCode);
 
       // listen for response
-      response.stream.transform(utf8.decoder).listen((value) {
+      /*response.stream.transform(utf8.decoder).listen((value) {
         print(value);
-      });
+      });*/
+      if (response.statusCode == 200) {
+        print("Image upload: successful");
+        setState(() {
+          uploadedVisibility = true;
+          confirmRejectVisibility = false;
+          GetStockDataDetails details = new GetStockDataDetails();
+          details.updateStockDetails();
+        });
+      } else {
+        print("Image upload: failed");
+      }
     });
   }
 
@@ -380,21 +458,21 @@ class _DisplayPictureState extends State<DisplayPictureScreen> {
         sourcePath: image.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
-                CropAspectRatioPreset.square,
-                CropAspectRatioPreset.ratio3x2,
-                CropAspectRatioPreset.original,
+                //CropAspectRatioPreset.square,
+                //CropAspectRatioPreset.ratio3x2,
+                //CropAspectRatioPreset.original,
                 CropAspectRatioPreset.ratio4x3,
-                CropAspectRatioPreset.ratio16x9
+                //CropAspectRatioPreset.ratio16x9
               ]
             : [
-                CropAspectRatioPreset.original,
-                CropAspectRatioPreset.square,
-                CropAspectRatioPreset.ratio3x2,
+                //CropAspectRatioPreset.original,
+                //CropAspectRatioPreset.square,
+                //CropAspectRatioPreset.ratio3x2,
                 CropAspectRatioPreset.ratio4x3,
-                CropAspectRatioPreset.ratio5x3,
-                CropAspectRatioPreset.ratio5x4,
-                CropAspectRatioPreset.ratio7x5,
-                CropAspectRatioPreset.ratio16x9
+                //CropAspectRatioPreset.ratio5x3,
+                //CropAspectRatioPreset.ratio5x4,
+                //CropAspectRatioPreset.ratio7x5,
+                //CropAspectRatioPreset.ratio16x9
               ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Crop Image',

@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_signup/login/components/login_model.dart';
+import 'package:flutter_login_signup/stock/components/get_stock_details.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_login_signup/vars.dart' as globals;
 import 'package:flutter_login_signup/dashboard/components/dealer_model.dart';
@@ -209,13 +210,13 @@ class _StockPageState extends State<StockPage> {
 
   Widget _buildUnpublishedPage(BuildContext context) {
     return Container(
-      child: _listBuilder(context, stockData[0].data.stocks),
+      child: _listBuilder(context, stockData[0].data.stocks, 0),
     );
   }
 
   Widget _buildPublishedPage(BuildContext context) {
     return Container(
-      child: _listBuilder(context, stockData[1].data.stocks),
+      child: _listBuilder(context, stockData[1].data.stocks, 1),
     );
   }
 
@@ -277,42 +278,7 @@ class _StockPageState extends State<StockPage> {
     }
   }
 
-  List<ImageProvider> loadImages(List<stock.Photo> data) {
-    List<ImageProvider> images = new List();
-    for (int i = 0; i < data.length; i++) {
-      //print("Getting img: " + data[i].id.toString());
-      images.add(imgFetcher(data, i));
-    }
-    return images;
-  }
-
-  ImageProvider imgFetcher(List<Photo> data, int index) {
-    try {
-      String directory = data[index].directory,
-          filename = data[index].photo;
-
-      var token = "Bearer " + globals.token;
-      print("Getting photo: " + filename);
-      String url = globals.base_img_url;
-      String photo_request = url + directory + filename;
-      NetworkImage photo = NetworkImage(
-        photo_request,
-        headers: <String, String>{
-          'Authorization': token,
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json'
-        },
-      );
-      return photo;
-    } catch (e) {
-      return AssetImage(
-        'assets/images/car_icon.png',
-      );
-    }
-  }
-
-
-  Widget _listBuilder(BuildContext context, List<Stocks> data) {
+  Widget _listBuilder(BuildContext context, List<Stocks> data, int dataIndex1) {
     return Padding(
         padding: EdgeInsets.only(top: 20.0),
         child: Scrollbar(
@@ -322,9 +288,13 @@ class _StockPageState extends State<StockPage> {
                 return new GestureDetector(
                   onTap: () {
                     print("Card: " + index.toString() + " clicked\nOpening details window...");
+                    globals.stock_data_indices.clear();
+                    globals.stock_data_indices.add(dataIndex1);
+                    globals.stock_data_indices.add(index);
                     globals.stock_details = data[index];
                     //globals.photos = data[index].photos;
-                    globals.img_provider_photos = loadImages(data[index].photos);
+                    GetStockDataDetails details = new GetStockDataDetails();
+                    globals.img_provider_photos = details.loadImages(data[index].photos);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Detail()),

@@ -15,6 +15,7 @@ import 'package:flutter_login_signup/dashboard/components/dealer_stats_model.dar
 import 'package:flutter_login_signup/dashboard/components/pie_chart.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:flutter_login_signup/stock/components/dealerstock_model.dart';
+import 'package:flutter_login_signup/stock/components/get_stock_data.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -122,8 +123,8 @@ class _DashboardState extends State<Dashboard> {
             ));
             globals.dealer_stock_no = pageNo;
             //get required stock data
-            List<StockData> sd = await getStockData();
-            globals.stock_data = sd;
+            GetStockData gsd = new GetStockData();
+            globals.stock_data = await gsd.getStockData();
             //Navigate to stock page
             Navigator.push(
               context,
@@ -131,46 +132,6 @@ class _DashboardState extends State<Dashboard> {
             );
           }),
     );
-  }
-
-  Future<List<StockData>> getStockData() async {
-    List<StockData> result = new List();
-    for (int i = 1; i <= 2; i++) {
-      await loadDetails(dealer_model.dealers[globals.dealer_stock_no].id, i)
-          .then((value) {
-        result.add(value);
-      });
-    }
-    return result;
-  }
-
-  Future<StockData> loadDetails(int dealer_id, int state_id) async {
-    //state_id 1 = unpublished, 2 = published
-    var token = "Bearer " + globals.token;
-    var url = globals.getDealerStock +
-        dealer_id.toString() +
-        "/" +
-        state_id.toString();
-    print("Getting stock details @ " + url);
-    var response = await http.get(
-      url,
-      headers: <String, String>{
-        'Authorization': token,
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Accept': 'application/json'
-      },
-    );
-    print(response.body);
-    print(response.statusCode.toString());
-    final jsonResponse = json.decode(response.body);
-    try {
-      StockData stockData = new StockData.fromJson(jsonResponse);
-      print(stockData.data.error.toString());
-      return stockData;
-    } catch (e) {
-      print("Failed getting dealerstock");
-      return null;
-    }
   }
 
   Widget _buildPage(int position) {

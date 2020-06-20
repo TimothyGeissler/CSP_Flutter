@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_signup/login/components/login_model.dart';
+import 'package:flutter_login_signup/stock/components/get_stock_details.dart';
 import 'package:flutter_login_signup/stock/pages/stock_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_login_signup/vars.dart' as globals;
@@ -130,6 +131,8 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
     ));
 
     setState(() {
+      GetStockDataDetails details = new GetStockDataDetails();
+      details.updateStockDetails();
       data = globals.stock_details;
       //init images
       // loadImages();
@@ -259,7 +262,19 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
           "CSP Mobile",
           style: TextStyle(fontSize: 27.0),
         ),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => StockPage()),
+            );
+          },
+          child: Icon(
+            Icons.arrow_back,  // add custom icons also
+          ),
+        ),
       ),
       resizeToAvoidBottomInset: false,
       body: Center(
@@ -337,9 +352,7 @@ class _DetailState extends State<Detail> with SingleTickerProviderStateMixin, Wi
         physics: NeverScrollableScrollPhysics(),
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height >= 775.0
-              ? MediaQuery.of(context).size.height
-              : 589.0,
+          height: MediaQuery.of(context).size.height - 150,
           decoration: new BoxDecoration(
             gradient: new LinearGradient(
                 colors: [

@@ -30,3 +30,5 @@ String dealer_name;
 int dealer_stock_no;
 stock.Stocks stock_details; //parsed to Details
 String image_captured;
+
+List<int> stock_data_indices = new List();
