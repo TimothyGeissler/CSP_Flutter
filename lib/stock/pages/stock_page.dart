@@ -63,7 +63,6 @@ class _StockPageState extends State<StockPage> {
 
   @override
   void dispose() {
-    //Controller?.dispose();
     super.dispose();
   }
 

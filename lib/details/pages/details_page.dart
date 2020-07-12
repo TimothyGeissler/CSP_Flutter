@@ -48,6 +48,7 @@ class _DetailState extends State<Detail>
   double _fabHeight = 56.0;
 
   bool published;
+  bool saveFabVisibility = true;
 
   TextEditingController c1 = new TextEditingController();
   TextEditingController c2 = new TextEditingController();
@@ -145,7 +146,7 @@ class _DetailState extends State<Detail>
     });
 
     //init published var
-    parsePublished(data.state);
+    published = parsePublished(data.state);
 
     super.initState();
   }
@@ -237,11 +238,32 @@ class _DetailState extends State<Detail>
     return result;
   }
 
+  int parseColourToString(String colour) {
+    int result = data.colour; //failsafe
+
+    colourMap.ColourData colourData = globals.colourData;
+    int len = colourData.colourList.colours.length;
+    for (int i = 0; i < len; i++) {
+      if (colourData.colourList.colours[i].colour == colour) {
+        result = colourData.colourList.colours[i].id;
+      }
+    }
+    return result;
+  }
+
   bool parsePublished(int publishedInt) {
     if (publishedInt == 1) {
-      published = false;
+      return false;
     } else {
-      published = true;
+      return true;
+    }
+  }
+
+  int parsePublishedToInt(bool publishedBool) {
+    if (publishedBool == false) {
+      return 1;
+    } else {
+      return 0;
     }
   }
 
@@ -255,70 +277,159 @@ class _DetailState extends State<Detail>
     }
   }
 
+  int parseTxtFieldToInt(String data) {
+    int response;
+    try {
+      response = int.parse(data);
+    } catch (e) {
+      response = null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          title: Text(
-            "CSP Mobile",
-            style: TextStyle(fontSize: 27.0),
+      key: _scaffoldKey,
+      appBar: AppBar(
+        title: Text(
+          "CSP Mobile",
+          style: TextStyle(fontSize: 27.0),
+        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => StockPage()),
+            );
+          },
+          child: Icon(
+            Icons.arrow_back, // add custom icons also
           ),
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => StockPage()),
-              );
-            },
-            child: Icon(
-              Icons.arrow_back, // add custom icons also
+        ),
+      ),
+      //resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        //physics: NeverScrollableScrollPhysics(),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width,
+            minHeight: MediaQuery.of(context).size.height - 145
+          ),
+          child: IntrinsicHeight(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Center(
+                    child: Container(
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [Color(0xffffd500), Color(0xffff9900)])),
+                        child: Wrap(
+                          children: <Widget>[
+                            SingleChildScrollView(
+                              controller: scrollController,
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 25.0, left: 20.0, bottom: 0.0),
+                                    child: Text(
+                                      data.trim.substring(data.trim.indexOf('-') + 2,
+                                          data.trim.lastIndexOf("(")),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: doublePage(context),
+                            ),
+                          ],
+                        ))),
+              ],
             ),
           ),
         ),
-        resizeToAvoidBottomInset: false,
-        body: Center(
-            child: Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [Color(0xffffd500), Color(0xffff9900)])),
-                child: Wrap(
-                  children: <Widget>[
-                    SingleChildScrollView(
-                      controller: scrollController,
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: 25.0, left: 20.0, bottom: 0.0),
-                            child: Text(
-                              data.trim.substring(data.trim.indexOf('-') + 2,
-                                  data.trim.lastIndexOf("(")),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30.0,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: doublePage(context),
-                    ),
-                  ],
-                ))),
+      ),
+      floatingActionButton: Visibility(
+        visible: saveFabVisibility,
+        child: FloatingActionButton(
+          child: Icon(
+            Icons.save,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            print("Save fields...");
+            _scaffoldKey.currentState.showSnackBar(new SnackBar(
+              content: new Row(
+                children: <Widget>[
+                  new CircularProgressIndicator(),
+                  new Text("  Saving")
+                ],
+              ),
+            ));
+            saveData();
+          },
+        ),
+      ),
     );
   }
 
-  bool saveData() {
-    return true;
+  saveData() async {
+    //check data has been edited
+    if (c1.text != parseStrings(data.stock_num) ||
+        c2.text != parseStrings(data.price.toString()) ||
+        c3.text != parseStrings(data.cost_price.toString()) ||
+        c4.text != parseStrings(data.year.toString()) ||
+        c5.text != parseStrings(data.mileage.toString()) ||
+        c6.text != parseColor(data.colour) ||
+        c7.text != parseStrings(data.vin) ||
+        c8.text != parseStrings(data.regNo) ||
+        published != parsePublished(data.state)) {
+      //can save
+      print("changes found...\nStock No. " + c1.text + "\nPrice " + c2.text + "\nCost price" + c3.text +
+          "\nYear " + c4.text + "\nMileage " + c5.text + "\nColour " + parseColourToString(c6.text).toString() +
+          "\nVin " + c7.text + "\nReg No. " + c8.text + "\nState " + parsePublishedToInt(published).toString());
+
+      var url = globals.update_stock_details + data.id.toString();
+      print("URL to post: " + url);
+
+      var token = "Bearer " + globals.token;
+      print("Auth token: " + token);
+      var response = await http.post(
+          globals.login,
+          headers: <String, String>{
+            'Authorization': token,
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Accept': 'application/json',
+          },
+          body: jsonEncode(<String, dynamic>{
+            'id': data.id,
+            'mileage': c5.text,
+            'stock_num': c1.text,
+            'year': c4.text,
+            'price': c2.text,
+            'cost_price': c3.text,
+            'vin': c7.text,
+            'reg_num': c8.text,
+            'state': parsePublishedToInt(published),
+            'colour': parseColourToString(c6.text),
+          })
+      );
+      print("Response: " + response.body + "\nPOST CODE: " + response.statusCode.toString());
+    } else {
+      print("no changes made");
+    }
   }
 
   Widget doublePage(BuildContext context) {
@@ -331,7 +442,7 @@ class _DetailState extends State<Detail>
         physics: NeverScrollableScrollPhysics(),
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - 145,
+          height: MediaQuery.of(context).size.height - 140,
           decoration: new BoxDecoration(
             gradient: new LinearGradient(
                 colors: [
@@ -359,11 +470,13 @@ class _DetailState extends State<Detail>
                       setState(() {
                         right = Colors.white;
                         left = Colors.black;
+                        saveFabVisibility = true;
                       });
                     } else if (i == 1) {
                       setState(() {
                         right = Colors.black;
                         left = Colors.white;
+                        saveFabVisibility = false;
                       });
                     }
                   },
@@ -411,7 +524,6 @@ class _DetailState extends State<Detail>
     ));
   }
 
-
   Widget _buildPhotosPage(BuildContext context) {
     return Stack(
       children: <Widget>[
@@ -438,21 +550,23 @@ class _DetailState extends State<Detail>
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
                                 Padding(
-                                    padding: EdgeInsets.only(top: 5.0, right: 5.0),
+                                    padding:
+                                        EdgeInsets.only(top: 5.0, right: 5.0),
                                     child: GestureDetector(
                                       onTap: () {
                                         setState(() {
                                           showDeleteAlertDialog(
                                               context,
-                                              globals
-                                                  .stock_details.photos[index].id,
+                                              globals.stock_details
+                                                  .photos[index].id,
                                               index);
                                         });
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.red,
-                                          borderRadius: BorderRadius.circular(32),
+                                          borderRadius:
+                                              BorderRadius.circular(32),
                                         ),
                                         child: Padding(
                                           padding: EdgeInsets.all(10.0),
@@ -483,7 +597,8 @@ class _DetailState extends State<Detail>
 
   Widget takePhotoCard(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0, bottom: 10.0),
+      padding:
+          EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0, bottom: 10.0),
       child: GestureDetector(
         onTap: () async {
           print("show camera");
@@ -502,8 +617,8 @@ class _DetailState extends State<Detail>
             context,
             MaterialPageRoute(
                 builder: (context) => Viewfinder(
-                  camera: firstCamera,
-                )),
+                      camera: firstCamera,
+                    )),
           );
         },
         child: Container(
@@ -612,22 +727,6 @@ class _DetailState extends State<Detail>
 
   void galleryPageChanged() {
     print("page changed");
-  }
-
-  Widget toggleFAB() {
-    return Container(
-      child: FloatingActionButton(
-        //elevation: 7.0,
-        backgroundColor: Colors.white,
-        onPressed: animate,
-        tooltip: 'Toggle',
-        child: AnimatedIcon(
-          icon: AnimatedIcons.menu_close,
-          color: Colors.amber,
-          progress: _animateIcon,
-        ),
-      ),
-    );
   }
 
   Widget saveFAB() {

@@ -31,7 +31,7 @@ class StockList {
 
 class Stocks {
   final bool error;
-  final int id,  mileage, year, price, cost_price, state, colour;
+  final int id, mileage, year, price, cost_price, state, colour;
   final String trim, regNo, slug, make, stock_num, vin;
   final MotorGroup motorgroup;
   final Dealer dealer;
