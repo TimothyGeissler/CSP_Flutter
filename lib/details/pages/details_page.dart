@@ -411,7 +411,7 @@ class _DetailState extends State<Detail>
                 ],
               ),
             ));
-            //saveData();
+            saveData();
           },
         ),
       ),
@@ -474,7 +474,8 @@ class _DetailState extends State<Detail>
 
       var token = "Bearer " + globals.token;
       print("Auth token: " + token);
-      var response = await http.post(globals.login,
+      var response = await http.post(
+          url,
           headers: <String, String>{
             'Authorization': token,
             'Content-Type': 'application/json; charset=UTF-8',
