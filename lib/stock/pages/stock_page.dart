@@ -298,85 +298,117 @@ class _StockPageState extends State<StockPage> {
   }
 
   Widget _listBuilder(BuildContext context, List<Stocks> data, int dataIndex1) {
-    return Padding(
+    if (data.length == 0) {
+      return Padding(
         padding: EdgeInsets.only(top: 20.0),
-        child: Scrollbar(
-          child: new ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (BuildContext context, int index) {
-                return new GestureDetector(
-                  onTap: () {
-                    print("Card: " + index.toString() + " clicked\nOpening details window...");
-                    globals.stock_data_indices.clear();
-                    globals.stock_data_indices.add(dataIndex1);
-                    globals.stock_data_indices.add(index);
-                    globals.stock_details = data[index];
-                    //globals.photos = data[index].photos;
-                    GetStockDataDetails details = new GetStockDataDetails();
-                    globals.img_provider_photos = details.loadImages(data[index].photos);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Detail()),
-                    );
-                  },
-                  child: Card(
-                    elevation: 3.0,
-                    child: Row(
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: thumbnailFetcher(data, index),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
-                                  child: Text(
-                                    parseTrim(data[index].trim),
-                                    style: TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 0.0),
-                                  child:
-                                  Text("Stock No: " + data[index].stock_num),
-                                ),
-                                Row(
+        child: Center(
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32.0),
+                color: Colors.white,
+                /*boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.4),
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                    offset: Offset(0, 4),
+                  )
+                ]*/
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(top: 7.0, bottom: 7.0, left: 15.0, right: 15.0),
+              child: Text(
+                "No cars found",
+                style: TextStyle(
+                    color: Colors.amber,
+                    fontSize: 20.0
+                ),
+              ),
+            )
+          )
+        ),
+      );
+    } else {
+      return Padding(
+          padding: EdgeInsets.only(top: 20.0),
+          child: Scrollbar(
+            child: new ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return new GestureDetector(
+                    onTap: () {
+                      print("Card: " + index.toString() + " clicked\nOpening details window...");
+                      globals.stock_data_indices.clear();
+                      globals.stock_data_indices.add(dataIndex1);
+                      globals.stock_data_indices.add(index);
+                      globals.stock_details = data[index];
+                      //globals.photos = data[index].photos;
+                      GetStockDataDetails details = new GetStockDataDetails();
+                      globals.img_provider_photos = details.loadImages(data[index].photos);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Detail()),
+                      );
+                    },
+                    child: Card(
+                      elevation: 3.0,
+                      child: Row(
+                        children: <Widget>[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: thumbnailFetcher(data, index),
+                          ),
+                          Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Padding(
-                                      padding: EdgeInsets.only(right: 10.0),
+                                      padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
                                       child: Text(
-                                          "Year: " + data[index].year.toString()),
+                                        parseTrim(data[index].trim),
+                                        style: TextStyle(fontWeight: FontWeight.w600),
+                                      ),
                                     ),
-                                    Text("Mileage: " +
-                                        data[index].mileage.toString() +
-                                        "km"),
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 0.0),
+                                      child:
+                                      Text("Stock No: " + data[index].stock_num),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 10.0),
+                                          child: Text(
+                                              "Year: " + data[index].year.toString()),
+                                        ),
+                                        Text("Mileage: " +
+                                            data[index].mileage.toString() +
+                                            "km"),
+                                      ],
+                                    ),
+                                    Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: 10.0, right: 20.0, top: 5.0),
+                                        child: Text(
+                                          "Price: " + parsePrice(data[index].price),
+                                          style: TextStyle(
+                                              color: Colors.green[400],
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 18),
+                                        ))
                                   ],
                                 ),
-                                Padding(
-                                    padding: EdgeInsets.only(
-                                        bottom: 10.0, right: 20.0, top: 5.0),
-                                    child: Text(
-                                      "Price: " + parsePrice(data[index].price),
-                                      style: TextStyle(
-                                          color: Colors.green[400],
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ))
-                              ],
-                            ),
+                              )
                           )
-                        )
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }),
-        ));
+                  );
+                }),
+          ));
+    }
   }
 
   Widget _buildMenuBar(BuildContext context, PageController _pageController) {

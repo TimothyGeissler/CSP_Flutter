@@ -6,7 +6,9 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http_parser/http_parser.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_signup/login/components/login_model.dart';
@@ -50,15 +52,7 @@ class _DetailState extends State<Detail>
   bool published;
   bool saveFabVisibility = true;
 
-  TextEditingController c1 = new TextEditingController();
-  TextEditingController c2 = new TextEditingController();
-  TextEditingController c3 = new TextEditingController();
-  TextEditingController c4 = new TextEditingController();
-  TextEditingController c5 = new TextEditingController();
-  TextEditingController c6 = new TextEditingController();
-  TextEditingController c7 = new TextEditingController();
-  TextEditingController c8 = new TextEditingController();
-  TextEditingController c9 = new TextEditingController();
+  List<TextEditingController> controllerList = List.generate(8, (i) => TextEditingController());
 
   ScrollController scrollController =
       ScrollController(initialScrollOffset: 0.0);
@@ -137,8 +131,8 @@ class _DetailState extends State<Detail>
       GetStockDataDetails details = new GetStockDataDetails();
       details.updateStockDetails();
       data = globals.stock_details;
-      //init images
-      // loadImages();
+      //init textfield data
+      loadTxtFieldControllers(data);
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -153,14 +147,9 @@ class _DetailState extends State<Detail>
 
   @override
   void dispose() {
-    c1.dispose();
-    c2.dispose();
-    c3.dispose();
-    c4.dispose();
-    c5.dispose();
-    c6.dispose();
-    c7.dispose();
-    c8.dispose();
+    for (TextEditingController controller in controllerList) {
+      controller.dispose();
+    }
 
     WidgetsBinding.instance.removeObserver(this);
     _animationController.dispose();
@@ -181,6 +170,17 @@ class _DetailState extends State<Detail>
     for (int i = 0; i < globals.photos.length; i++) {
       await photos.add(imgFetcher(globals.photos, i));
     }
+  }
+
+  void loadTxtFieldControllers(Stocks data) {
+    controllerList[0].text = parseStrings(data.stock_num);
+    controllerList[1].text = parseStrings(data.price.toString());
+    controllerList[2].text = parseStrings(data.cost_price.toString());
+    controllerList[3].text = parseStrings(data.year.toString());
+    controllerList[4].text = parseStrings(data.mileage.toString());
+    controllerList[5].text = parseColor(data.colour);
+    controllerList[6].text = parseStrings(data.vin);
+    controllerList[7].text = parseStrings(data.regNo);
   }
 
   ImageProvider imgFetcher(List<Photo> data, int index) {
@@ -205,6 +205,36 @@ class _DetailState extends State<Detail>
         'assets/images/car_icon.png',
       );
     }
+  }
+
+  Image imgNetwork(List<Photo> data, int index) {
+    String directory = data[index].directory, filename = data[index].photo;
+    var token = "Bearer " + globals.token;
+    print("Getting photo: " + filename);
+    String url = globals.base_img_url;
+    String photo_request = url + directory + filename;
+    return Image.network(
+      photo_request,
+      headers: <String, String>{
+        'Authorization': token,
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      loadingBuilder: (BuildContext context, Widget child,
+          ImageChunkEvent loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+        return Center(
+          child: CircularProgressIndicator(
+            value: loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded /
+                    loadingProgress.expectedTotalBytes
+                : null,
+          ),
+        );
+      },
+    );
   }
 
   void scrollHeader() {
@@ -314,9 +344,8 @@ class _DetailState extends State<Detail>
         //physics: NeverScrollableScrollPhysics(),
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width,
-            minHeight: MediaQuery.of(context).size.height - 145
-          ),
+              minWidth: MediaQuery.of(context).size.width,
+              minHeight: MediaQuery.of(context).size.height - 145),
           child: IntrinsicHeight(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -327,7 +356,10 @@ class _DetailState extends State<Detail>
                             gradient: LinearGradient(
                                 begin: Alignment.topRight,
                                 end: Alignment.bottomLeft,
-                                colors: [Color(0xffffd500), Color(0xffff9900)])),
+                                colors: [
+                              Color(0xffffd500),
+                              Color(0xffff9900)
+                            ])),
                         child: Wrap(
                           children: <Widget>[
                             SingleChildScrollView(
@@ -340,7 +372,8 @@ class _DetailState extends State<Detail>
                                     padding: EdgeInsets.only(
                                         top: 25.0, left: 20.0, bottom: 0.0),
                                     child: Text(
-                                      data.trim.substring(data.trim.indexOf('-') + 2,
+                                      data.trim.substring(
+                                          data.trim.indexOf('-') + 2,
                                           data.trim.lastIndexOf("(")),
                                       style: TextStyle(
                                           color: Colors.white,
@@ -378,36 +411,70 @@ class _DetailState extends State<Detail>
                 ],
               ),
             ));
-            saveData();
+            //saveData();
           },
         ),
       ),
     );
   }
 
+  void confirmSaveDialog(BuildContext context) {
+    showDialog(
+      context: null,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Title"),
+          content: new Text("Are you sure you want to save these changes?"),
+          actions: <Widget>[
+            new FlatButton(
+                onPressed: null,
+                child: Text(
+                  "Cancel"
+                )
+            )
+          ],
+        );
+      }
+    );
+  }
+
   saveData() async {
     //check data has been edited
-    if (c1.text != parseStrings(data.stock_num) ||
-        c2.text != parseStrings(data.price.toString()) ||
-        c3.text != parseStrings(data.cost_price.toString()) ||
-        c4.text != parseStrings(data.year.toString()) ||
-        c5.text != parseStrings(data.mileage.toString()) ||
-        c6.text != parseColor(data.colour) ||
-        c7.text != parseStrings(data.vin) ||
-        c8.text != parseStrings(data.regNo) ||
+    if (controllerList[0].text != parseStrings(data.stock_num) ||
+        controllerList[1].text != parseStrings(data.price.toString()) ||
+        controllerList[2].text != parseStrings(data.cost_price.toString()) ||
+        controllerList[3].text != parseStrings(data.year.toString()) ||
+        controllerList[4].text != parseStrings(data.mileage.toString()) ||
+        controllerList[5].text != parseColor(data.colour) ||
+        controllerList[6].text != parseStrings(data.vin) ||
+        controllerList[7].text != parseStrings(data.regNo) ||
         published != parsePublished(data.state)) {
       //can save
-      print("changes found...\nStock No. " + c1.text + "\nPrice " + c2.text + "\nCost price" + c3.text +
-          "\nYear " + c4.text + "\nMileage " + c5.text + "\nColour " + parseColourToString(c6.text).toString() +
-          "\nVin " + c7.text + "\nReg No. " + c8.text + "\nState " + parsePublishedToInt(published).toString());
+      print("changes found...\nStock No. " +
+          controllerList[0].text +
+          "\nPrice " +
+          controllerList[1].text +
+          "\nCost price" +
+          controllerList[2].text +
+          "\nYear " +
+          controllerList[3].text +
+          "\nMileage " +
+          controllerList[4].text +
+          "\nColour " +
+          parseColourToString(controllerList[5].text).toString() +
+          "\nVin " +
+          controllerList[6].text +
+          "\nReg No. " +
+          controllerList[7].text +
+          "\nState " +
+          parsePublishedToInt(published).toString());
 
       var url = globals.update_stock_details + data.id.toString();
       print("URL to post: " + url);
 
       var token = "Bearer " + globals.token;
       print("Auth token: " + token);
-      var response = await http.post(
-          globals.login,
+      var response = await http.post(globals.login,
           headers: <String, String>{
             'Authorization': token,
             'Content-Type': 'application/json; charset=UTF-8',
@@ -415,18 +482,20 @@ class _DetailState extends State<Detail>
           },
           body: jsonEncode(<String, dynamic>{
             'id': data.id,
-            'mileage': c5.text,
-            'stock_num': c1.text,
-            'year': c4.text,
-            'price': c2.text,
-            'cost_price': c3.text,
-            'vin': c7.text,
-            'reg_num': c8.text,
+            'mileage': controllerList[4].text,
+            'stock_num': controllerList[0].text,
+            'year': controllerList[3].text,
+            'price': controllerList[1].text,
+            'cost_price': controllerList[2].text,
+            'vin': controllerList[6].text,
+            'reg_num': controllerList[7].text,
             'state': parsePublishedToInt(published),
-            'colour': parseColourToString(c6.text),
-          })
-      );
-      print("Response: " + response.body + "\nPOST CODE: " + response.statusCode.toString());
+            'colour': parseColourToString(controllerList[5].text),
+          }));
+      print("Response: " +
+          response.body +
+          "\nPOST CODE: " +
+          response.statusCode.toString());
     } else {
       print("no changes made");
     }
@@ -503,23 +572,15 @@ class _DetailState extends State<Detail>
     return Container(
         child: ListView(
       children: <Widget>[
-        textfieldWidget(context, c1, parseStrings(data.stock_num), icons[0],
-            fieldLabels[0]),
-        textfieldWidget(context, c2, parseStrings(data.price.toString()),
-            icons[1], fieldLabels[1]),
-        textfieldWidget(context, c3, parseStrings(data.cost_price.toString()),
-            icons[2], fieldLabels[2]),
-        textfieldWidget(context, c4, parseStrings(data.year.toString()),
-            icons[3], fieldLabels[3]),
-        textfieldWidget(context, c5, parseStrings(data.mileage.toString()),
-            icons[4], fieldLabels[4]),
+        textfieldWidget(context, 0, icons[0], fieldLabels[0]),
+        textfieldWidget(context, 1, icons[1], fieldLabels[1]),
+        textfieldWidget(context, 2, icons[2], fieldLabels[2]),
+        textfieldWidget(context, 3, icons[3], fieldLabels[3]),
+        textfieldWidget(context, 4, icons[4], fieldLabels[4]),
         toggleWidget(context),
-        textfieldWidget(
-            context, c6, parseColor(data.colour), icons[6], fieldLabels[6]),
-        textfieldWidget(
-            context, c7, parseStrings(data.vin), icons[7], fieldLabels[7]),
-        textfieldWidget(
-            context, c8, parseStrings(data.regNo), icons[8], fieldLabels[8]),
+        textfieldWidget(context, 5, icons[6], fieldLabels[6]),
+        textfieldWidget(context, 6, icons[7], fieldLabels[7]),
+        textfieldWidget(context, 7, icons[8], fieldLabels[8]),
       ],
     ));
   }
@@ -545,6 +606,10 @@ class _DetailState extends State<Detail>
                                 image: globals.img_provider_photos[index],
                                 fit: BoxFit.cover,
                               ),
+                              /*Image(
+                                image: imgNetwork(globals.photos, index), //globals.img_provider_photos[index],
+                                fit: BoxFit.cover,
+                              ),*/
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -905,9 +970,7 @@ class _DetailState extends State<Detail>
             )));
   }
 
-  Widget textfieldWidget(BuildContext context, TextEditingController controller,
-      String text, IconData icon, String title) {
-    controller.text = text;
+  Widget textfieldWidget(BuildContext context, int index, IconData icon, String title) {
     return Padding(
         padding: EdgeInsets.only(top: 12.0, left: 20.0, right: 20.0),
         child: Container(
@@ -924,8 +987,9 @@ class _DetailState extends State<Detail>
                 ]),
             child: Theme(
               child: TextField(
-                controller: controller,
+                controller: controllerList[index],
                 cursorColor: Colors.grey,
+                textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                   //hintText: text,
                   labelText: title,
@@ -938,6 +1002,12 @@ class _DetailState extends State<Detail>
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                 ),
+                onEditingComplete: () {
+                  //String newText = controllerList[index].text;
+                  print("Compete: " + controllerList[index].text);
+                  //controllerList[index].text = newText;
+                  FocusScope.of(context).unfocus();
+                },
               ),
               data: Theme.of(context).copyWith(primaryColor: Colors.grey),
             )));

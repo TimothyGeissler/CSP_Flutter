@@ -30,6 +30,7 @@ dependencies:
   dio: ^3.0.9
   flutter_circular_chart: ^0.1.0
   progress_state_button: ^1.0.1
+  shared_preferences: ^0.5.8
 
   camera: ^0.5.8+2
   path_provider:
@@ -37,7 +38,6 @@ dependencies:
   image_cropper: ^1.2.3
   image_picker: ^0.6.3
   flutter_image_compress: ^0.6.8
-
 
 dev_dependencies:
   flutter_test:
